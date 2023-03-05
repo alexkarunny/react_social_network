@@ -1,0 +1,13 @@
+.app {
+    margin: 0 auto;
+    width: 1200px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-rows: 2fr 10fr;
+    grid-template-columns: 2fr 10fr ;
+    grid-template-areas:
+                "header header"
+                "nav profile";
+}
+
+
