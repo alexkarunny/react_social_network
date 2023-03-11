@@ -1,18 +1,19 @@
 .app {
     margin: 0 auto;
     width: 1200px;
+    height: 720px;
     display: grid;
     grid-gap: 10px;
     grid-template-rows: 2fr 10fr;
-    grid-template-columns: 2fr 10fr ;
+    grid-template-columns: 2fr 10fr;
     grid-template-areas:
                 "header header"
                 "nav profile";
 }
 
-.app_content{
+.app_content {
     grid-area: profile;
-    padding: 10px;
+    padding: 15px;
     background-color: green;
 }
 

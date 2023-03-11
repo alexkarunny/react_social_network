@@ -1,4 +1,3 @@
-
 import classes from './Dialogs.module.css'
 
 type DialogsPropsType = {
@@ -6,9 +5,9 @@ type DialogsPropsType = {
 }
 
 export const Dialogs = (props: DialogsPropsType) => {
-  return (
-      <div>
-          <h2>{props.title}</h2>
-      </div>
-  )
+    return (
+        <div>
+            <h2>{props.title}</h2>
+        </div>
+    )
 }

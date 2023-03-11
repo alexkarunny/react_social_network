@@ -19,7 +19,6 @@ export const MyPosts = (props: MyPostsPropsType) => {
             </div>
             <Post postText={'Today is a great day'}/>
             <Post postText={'I\'ll achieve the target'}/>
-            <Post postText={'Great show'}/>
         </div>
     )
 }
