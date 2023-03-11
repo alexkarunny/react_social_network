@@ -7,7 +7,7 @@ type PostPropsType = {
 
 export const Post = (props: PostPropsType) => {
     return (
-        <div>
+        <div className={classes.post}>
             <div>
                 <img src={ava} alt="" className={classes.ava}/>
                 <span>{props.postText}</span>

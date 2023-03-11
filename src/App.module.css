@@ -14,7 +14,7 @@
 .app_content {
     grid-area: profile;
     padding: 15px;
-    background-color: green;
+    background-color: rgba(128, 77, 134, 0.63);
 }
 
 

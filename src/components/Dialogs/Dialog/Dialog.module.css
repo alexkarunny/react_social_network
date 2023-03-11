@@ -1,0 +1,8 @@
+.dialog_item a{
+    color: white;
+    text-decoration: none;
+}
+
+.dialog_item a.active {
+    color: goldenrod;
+}

@@ -1,7 +1,6 @@
 import React from 'react';
-import classes from './Profile.module.css';
-import bg from '../../src/images/bg.jpg'
 import {MyPosts} from './MyPosts/MyPosts';
+import {ProfileInfo} from './ProfileInfo/ProfileInfo';
 
 type FooterPropsType = {
     title: string
@@ -11,12 +10,7 @@ export const Profile = (props: FooterPropsType) => {
     return (
         <div>
             <h2>{props.title}</h2>
-            <div>
-                <img src={bg} alt="fg" className={classes.bg}/>
-            </div>
-            <div>
-                ava + description
-            </div>
+            <ProfileInfo/>
             <MyPosts title={'My Posts'}/>
         </div>
     )

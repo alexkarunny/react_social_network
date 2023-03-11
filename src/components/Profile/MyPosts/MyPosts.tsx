@@ -14,11 +14,17 @@ export const MyPosts = (props: MyPostsPropsType) => {
                 {props.title}
             </h3>
             <div>
-                <textarea>New Post</textarea>
-                <button>Send</button>
+                <div>
+                    <textarea>New Post</textarea>
+                </div>
+                <div>
+                    <button>Send</button>
+                </div>
             </div>
-            <Post postText={'Today is a great day'}/>
-            <Post postText={'I\'ll achieve the target'}/>
+            <div className={classes.postGroup}>
+                <Post postText={'Today is a great day'}/>
+                <Post postText={'I\'ll achieve the target'}/>
+            </div>
         </div>
     )
 }

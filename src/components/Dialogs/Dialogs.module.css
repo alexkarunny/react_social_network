@@ -1,0 +1,21 @@
+.dialogs{
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 20%  20%;
+    grid-template-areas:
+        'title title'
+        'dialogs messages';
+}
+
+.dialogs_items {
+    grid-area: dialogs;
+}
+
+.title {
+    grid-area: title ;
+}
+
+.messages_items {
+    grid-area: messages;
+}
+
