@@ -9,7 +9,7 @@ type FooterPropsType = {
 
 export const Profile = (props: FooterPropsType) => {
     return (
-        <div className={classes.profile}>
+        <div>
             <h2>{props.title}</h2>
             <div>
                 <img src={bg} alt="fg" className={classes.bg}/>

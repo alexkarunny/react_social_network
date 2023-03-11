@@ -10,4 +10,10 @@
                 "nav profile";
 }
 
+.app_content{
+    grid-area: profile;
+    padding: 10px;
+    background-color: green;
+}
+
 
