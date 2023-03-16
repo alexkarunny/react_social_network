@@ -1,9 +1,12 @@
 import classes from './Dialogs.module.css'
 import {Dialog} from './Dialog/Dialog';
 import {Message} from './Message/Message';
+import {dialogNameType, messageTextType} from '../../redux/state';
 
 type DialogsPropsType = {
     title: string
+    dialogsNames: dialogNameType[]
+    messagesTexts: messageTextType[]
 }
 
 export const Dialogs = (props: DialogsPropsType) => {
@@ -11,16 +14,12 @@ export const Dialogs = (props: DialogsPropsType) => {
         <div className={classes.dialogs}>
             <h2 className={classes.title}>{props.title}</h2>
             <div className={classes.dialogs_items}>
-                <Dialog dialogName={'Ivan'} id={1}/>
-                <Dialog dialogName={'Lera'} id={2}/>
-                <Dialog dialogName={'Snupp'} id={3}/>
-                <Dialog dialogName={'Baza'} id={4}/>
-                <Dialog dialogName={'Andrew'} id={5}/>
+                {props.dialogsNames.map((d, i) => <Dialog key={d.id + i}
+                                                          dialogName={d.dialogName}
+                                                          id={d.id}/>)}
             </div>
             <div className={classes.messages_items}>
-                <Message messageText={'Hi'}/>
-                <Message messageText={'How are You?'}/>
-                <Message messageText={'At the same time'}/>
+                {props.messagesTexts.map((m, i) => <Message key={i} messageText={m.messageText}/>)}
             </div>
         </div>
     )

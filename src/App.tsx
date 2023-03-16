@@ -8,16 +8,24 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import {Friends} from './components/Friends/Friends';
 import {Video} from './components/Video/Video';
 import {Settings} from './components/Settings/Settings';
+import {stateProps} from './redux/state';
 
-function App() {
+type AppPropsType = {
+    state: stateProps
+}
+
+function App(props: AppPropsType) {
     return (
         <BrowserRouter>
             <div className={classes.app}>
                 <Header title={'Header'}/>
                 <NavBar title={'Menu'}/>
                 <div className={classes.app_content}>
-                    <Route path={'/profile'} render={() => <Profile title={'My Profile'}/>}></Route>
-                    <Route path={'/dialogs'} render={() => <Dialogs title={'My Dialogs'}/>}></Route>
+                    <Route path={'/profile'} render={() => <Profile title={'My Profile'}
+                                                                    postsTexts={props.state.profilePage.postsTexts}/>}></Route>
+                    <Route path={'/dialogs'} render={() => <Dialogs title={'My Dialogs'}
+                                                                    dialogsNames={props.state.dialogsPage.dialogsNames}
+                                                                    messagesTexts={props.state.dialogsPage.messagesTexts}/>}></Route>
                     <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
                     <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
                     <Route path={'/settings'} render={() => <Settings title={'My Settings'}/>}></Route>

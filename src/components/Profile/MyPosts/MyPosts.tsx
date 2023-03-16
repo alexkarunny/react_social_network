@@ -1,10 +1,12 @@
 import React from 'react';
 import classes from './MyPosts.module.css'
 import {Post} from './Post/Post';
+import {postTextType} from '../../../redux/state';
 
 
 type MyPostsPropsType = {
     title: string
+    postsTexts: postTextType[]
 }
 
 export const MyPosts = (props: MyPostsPropsType) => {
@@ -22,8 +24,7 @@ export const MyPosts = (props: MyPostsPropsType) => {
                 </div>
             </div>
             <div className={classes.postGroup}>
-                <Post postText={'Today is a great day'}/>
-                <Post postText={'I\'ll achieve the target'}/>
+                {props.postsTexts.map((p, i) => <Post key={i} postText={p.textPost}/>)}
             </div>
         </div>
     )
