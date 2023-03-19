@@ -1,6 +1,8 @@
+import {rerender} from '../rerender';
+
 export type stateProps = {
     profilePage: {
-        postsTexts: postTextType[]
+        postsTexts: postType[]
     },
     dialogsPage: {
         dialogsNames: dialogNameType[],
@@ -8,8 +10,10 @@ export type stateProps = {
     },
 }
 
-export type postTextType = {
+export type postType = {
+    id: number
     textPost: string
+    likesCount: number
 }
 
 export type dialogNameType = {
@@ -24,9 +28,9 @@ export type messageTextType = {
 export let state: stateProps = {
     profilePage: {
         postsTexts: [
-            {textPost: 'Today is a great day'},
-            {textPost: 'I\'ll achieve the target'},
-            {textPost: 'I got it'},
+            {id: 1, textPost: 'Today is a great day', likesCount: 1},
+            {id: 2, textPost: 'I\'ll achieve the target', likesCount: 2},
+            {id: 3, textPost: 'I got it', likesCount: 3},
         ],
     },
     dialogsPage: {
@@ -43,4 +47,16 @@ export let state: stateProps = {
             {messageText: 'At the same time'},
         ]
     }
+}
+
+export const addPostCallback = (textPost: string) => {
+    const newPost: postType = {
+        id: new Date().getTime(),
+        textPost: textPost,
+        likesCount: 0
+    }
+
+    state.profilePage.postsTexts.push(newPost)
+
+    rerender(state);
 }

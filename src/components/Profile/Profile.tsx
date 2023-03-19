@@ -1,19 +1,20 @@
 import React from 'react';
 import {MyPosts} from './MyPosts/MyPosts';
 import {ProfileInfo} from './ProfileInfo/ProfileInfo';
-import {postTextType} from '../../redux/state';
+import {postType} from '../../redux/state';
 
-type FooterPropsType = {
+type ProfilePropsType = {
     title: string
-    postsTexts: postTextType[]
+    posts: postType[]
+    addPostCallback: (textPost: string) => void
 }
 
-export const Profile = (props: FooterPropsType) => {
+export const Profile = (props: ProfilePropsType) => {
     return (
         <div>
             <h2>{props.title}</h2>
             <ProfileInfo/>
-            <MyPosts title={'My Posts'} postsTexts={props.postsTexts}/>
+            <MyPosts title={'My Posts'} posts={props.posts} addPostCallback={props.addPostCallback}/>
         </div>
     )
 }

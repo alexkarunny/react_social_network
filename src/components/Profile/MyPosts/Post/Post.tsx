@@ -2,19 +2,21 @@ import classes from './Post.module.css'
 import ava from '../../../../src/images/ava.jpg'
 
 type PostPropsType = {
-    postText: string
+    id: number
+    textPost: string
+    likesCount: number
 }
+
 
 export const Post = (props: PostPropsType) => {
     return (
         <div className={classes.post}>
             <div>
                 <img src={ava} alt="" className={classes.ava}/>
-                <span>{props.postText}</span>
+                <span>{props.textPost}</span>
             </div>
             <div>
-                <span>2 like&nbsp;</span>
-                <span>0 dislike</span>
+                <span>{props.likesCount} likes</span>
             </div>
         </div>
     )
