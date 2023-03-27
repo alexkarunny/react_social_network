@@ -1,4 +1,9 @@
-import {rerender} from '../rerender';
+
+let rerender = () => {}
+
+export const subscribe = (observer: () => void) => {
+  rerender = observer
+}
 
 export type stateProps = {
     profilePage: {
@@ -60,10 +65,10 @@ export const addPostCallback = () => {
     }
     state.profilePage.postsTexts.push(newPost)
     state.profilePage.newPostText = ''
-    rerender(state);
+    rerender();
 }
 
 export const addNewPostTextCallback = (newPostText: string) => {
     state.profilePage.newPostText = newPostText
-    rerender(state)
+    rerender()
 }

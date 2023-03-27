@@ -1,5 +1,18 @@
 import './index.css';
-import {state} from './redux/state';
-import {rerender} from './rerender';
+import {addNewPostTextCallback, addPostCallback, state, subscribe} from './redux/state';
+import ReactDOM from 'react-dom';
+import App from './App';
+import React from 'react';
 
-rerender(state)
+const rerender = () => {
+    ReactDOM.render(
+        <App state={state}
+             addPostCallback={addPostCallback}
+             addNewPostTextCallback={addNewPostTextCallback}/>,
+        document.getElementById('root')
+    )
+}
+
+rerender()
+
+subscribe(rerender)
