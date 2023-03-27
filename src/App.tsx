@@ -12,7 +12,8 @@ import {stateProps} from './redux/state';
 
 type AppPropsType = {
     state: stateProps
-    addPostCallback: (textPost: string) => void
+    addPostCallback: () => void
+    addNewPostTextCallback: (newTextPost: string) => void
 }
 
 function App(props: AppPropsType) {
@@ -24,7 +25,10 @@ function App(props: AppPropsType) {
                 <div className={classes.app_content}>
                     <Route path={'/profile'} render={() => <Profile title={'My Profile'}
                                                                     posts={props.state.profilePage.postsTexts}
-                                                                    addPostCallback={props.addPostCallback}/>}></Route>
+                                                                    addPostCallback={props.addPostCallback}
+                                                                    newPostText={props.state.profilePage.newPostText}
+                                                                    addNewPostTextCallback={props.addNewPostTextCallback}
+                    />}></Route>
                     <Route path={'/dialogs'} render={() => <Dialogs title={'My Dialogs'}
                                                                     dialogsNames={props.state.dialogsPage.dialogsNames}
                                                                     messagesTexts={props.state.dialogsPage.messagesTexts}/>}></Route>

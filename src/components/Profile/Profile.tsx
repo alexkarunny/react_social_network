@@ -6,7 +6,9 @@ import {postType} from '../../redux/state';
 type ProfilePropsType = {
     title: string
     posts: postType[]
-    addPostCallback: (textPost: string) => void
+    addPostCallback: () => void
+    newPostText: string
+    addNewPostTextCallback: (newTextPost: string) => void
 }
 
 export const Profile = (props: ProfilePropsType) => {
@@ -14,7 +16,12 @@ export const Profile = (props: ProfilePropsType) => {
         <div>
             <h2>{props.title}</h2>
             <ProfileInfo/>
-            <MyPosts title={'My Posts'} posts={props.posts} addPostCallback={props.addPostCallback}/>
+            <MyPosts title={'My Posts'}
+                     posts={props.posts}
+                     addPostCallback={props.addPostCallback}
+                     newPostText={props.newPostText}
+                     addNewPostTextCallback={props.addNewPostTextCallback}
+            />
         </div>
     )
 }

@@ -3,11 +3,12 @@ import {rerender} from '../rerender';
 export type stateProps = {
     profilePage: {
         postsTexts: postType[]
-    },
+        newPostText: string
+    }
     dialogsPage: {
-        dialogsNames: dialogNameType[],
+        dialogsNames: dialogNameType[]
         messagesTexts: messageTextType[]
-    },
+    }
 }
 
 export type postType = {
@@ -32,6 +33,8 @@ export let state: stateProps = {
             {id: 2, textPost: 'I\'ll achieve the target', likesCount: 2},
             {id: 3, textPost: 'I got it', likesCount: 3},
         ],
+        newPostText: '',
+
     },
     dialogsPage: {
         dialogsNames: [
@@ -49,14 +52,18 @@ export let state: stateProps = {
     }
 }
 
-export const addPostCallback = (textPost: string) => {
+export const addPostCallback = () => {
     const newPost: postType = {
         id: new Date().getTime(),
-        textPost: textPost,
+        textPost: state.profilePage.newPostText,
         likesCount: 0
     }
-
     state.profilePage.postsTexts.push(newPost)
-
+    state.profilePage.newPostText = ''
     rerender(state);
+}
+
+export const addNewPostTextCallback = (newPostText: string) => {
+    state.profilePage.newPostText = newPostText
+    rerender(state)
 }
