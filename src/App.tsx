@@ -8,10 +8,10 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import {Friends} from './components/Friends/Friends';
 import {Video} from './components/Video/Video';
 import {Settings} from './components/Settings/Settings';
-import {stateProps} from './redux/state';
+import {StateType} from './redux/state';
 
 type AppPropsType = {
-    state: stateProps
+    state: StateType
     addPostCallback: () => void
     addNewPostTextCallback: (newTextPost: string) => void
 }
