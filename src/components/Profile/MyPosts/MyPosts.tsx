@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import classes from './MyPosts.module.css'
 import {Post} from './Post/Post';
-import {ActionsTypes, postType} from '../../../redux/state';
+import {ActionsTypes, AddNewPostTextAC, AddPostAC, postType} from '../../../redux/state';
 
 
 type MyPostsPropsType = {
@@ -14,11 +14,11 @@ type MyPostsPropsType = {
 
 export const MyPosts = (props: MyPostsPropsType) => {
 
-    const onChangeAddPostHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch({type: 'ADD-NEW-POST-TEXT', newPostText: e.currentTarget.value})
+    const onChangeAddTextHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(AddNewPostTextAC(e.currentTarget.value))
     }
     const onClickAddPostHandler = () => {
-        props.dispatch({type: 'ADD-POST'})
+        props.dispatch(AddPostAC())
     }
     return (
         <div>
@@ -27,7 +27,7 @@ export const MyPosts = (props: MyPostsPropsType) => {
             </h3>
             <div>
                 <div>
-                    <textarea onChange={onChangeAddPostHandler} value={props.newPostText}/>
+                    <textarea onChange={onChangeAddTextHandler} value={props.newPostText}/>
                 </div>
                 <div>
                     <button onClick={onClickAddPostHandler}>Send</button>
