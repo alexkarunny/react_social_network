@@ -7,9 +7,7 @@ import React from 'react';
 const rerender = () => {
     const state = store.getState()
     ReactDOM.render(
-        <App state={state}
-             addPostCallback={store.addPostCallback.bind(store)}
-             addNewPostTextCallback={store.addNewPostTextCallback.bind(store)}/>,
+        <App state={state} dispatch={store.dispatch.bind(store)}/>,
         document.getElementById('root')
     )
 }

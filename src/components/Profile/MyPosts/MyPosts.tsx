@@ -1,23 +1,25 @@
 import React, {ChangeEvent} from 'react';
 import classes from './MyPosts.module.css'
 import {Post} from './Post/Post';
-import {postType} from '../../../redux/state';
+import {ActionsTypes, postType} from '../../../redux/state';
 
 
 type MyPostsPropsType = {
     title: string
     posts: postType[]
-    addPostCallback: () => void
+    dispatch: (action: ActionsTypes) => void
     newPostText: string
-    addNewPostTextCallback: (newTextPost: string) => void
+
 }
 
 export const MyPosts = (props: MyPostsPropsType) => {
 
     const onChangeAddPostHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.addNewPostTextCallback(e.currentTarget.value)
+        props.dispatch({type: 'ADD-NEW-POST-TEXT', newPostText: e.currentTarget.value})
     }
-
+    const onClickAddPostHandler = () => {
+        props.dispatch({type: 'ADD-POST'})
+    }
     return (
         <div>
             <h3>
@@ -28,7 +30,7 @@ export const MyPosts = (props: MyPostsPropsType) => {
                     <textarea onChange={onChangeAddPostHandler} value={props.newPostText}/>
                 </div>
                 <div>
-                    <button onClick={props.addPostCallback}>Send</button>
+                    <button onClick={onClickAddPostHandler}>Send</button>
                 </div>
             </div>
             <div className={classes.postGroup}>

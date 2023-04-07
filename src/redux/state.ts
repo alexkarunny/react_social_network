@@ -8,30 +8,35 @@ export type StateType = {
         messagesTexts: messageTextType[]
     }
 }
-
 export type postType = {
     id: number
     textPost: string
     likesCount: number
 }
-
 export type dialogNameType = {
     id: number
     dialogName: string
 }
-
 export type messageTextType = {
     messageText: string
 }
 
 export type StoreType = {
     _state: StateType
-    addPostCallback: () => void
-    addNewPostTextCallback: (newPostText: string) => void
     subscribe: (observer: () => void) => void
     _rerender: () => void
     getState: () => StateType
+    dispatch: (action: ActionsTypes) => void
 }
+
+type AddPostAT = {
+    type: 'ADD-POST'
+}
+type AddNewPostTextAT = {
+    type: 'ADD-NEW-POST-TEXT'
+    newPostText: string
+}
+export type ActionsTypes = AddPostAT | AddNewPostTextAT
 
 export const store: StoreType = {
     _state: {
@@ -59,26 +64,29 @@ export const store: StoreType = {
             ]
         }
     },
-    addPostCallback() {
-        const newPost: postType = {
-            id: new Date().getTime(),
-            textPost: this._state.profilePage.newPostText,
-            likesCount: 0
-        }
-        this._state.profilePage.postsTexts.push(newPost)
-        this._state.profilePage.newPostText = ''
-        this._rerender();
-    },
-    addNewPostTextCallback(newPostText) {
-        this._state.profilePage.newPostText = newPostText
-        this._rerender()
-    },
     _rerender() {
     },
+
     subscribe(observer) {
         this._rerender = observer
     },
     getState() {
         return this._state
+    },
+
+    dispatch(action) {
+        if (action.type === 'ADD-POST') {
+            const newPost: postType = {
+                id: new Date().getTime(),
+                textPost: this._state.profilePage.newPostText,
+                likesCount: 0
+            }
+            this._state.profilePage.postsTexts.push(newPost)
+            this._state.profilePage.newPostText = ''
+            this._rerender();
+        } else if (action.type === 'ADD-NEW-POST-TEXT') {
+            this._state.profilePage.newPostText = action.newPostText
+            this._rerender()
+        }
     }
 }

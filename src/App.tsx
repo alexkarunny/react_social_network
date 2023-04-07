@@ -8,12 +8,11 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import {Friends} from './components/Friends/Friends';
 import {Video} from './components/Video/Video';
 import {Settings} from './components/Settings/Settings';
-import {StateType} from './redux/state';
+import {ActionsTypes, StateType} from './redux/state';
 
 type AppPropsType = {
     state: StateType
-    addPostCallback: () => void
-    addNewPostTextCallback: (newTextPost: string) => void
+    dispatch: (action: ActionsTypes) => void
 }
 
 function App(props: AppPropsType) {
@@ -25,9 +24,8 @@ function App(props: AppPropsType) {
                 <div className={classes.app_content}>
                     <Route path={'/profile'} render={() => <Profile title={'My Profile'}
                                                                     posts={props.state.profilePage.postsTexts}
-                                                                    addPostCallback={props.addPostCallback}
+                                                                    dispatch={props.dispatch}
                                                                     newPostText={props.state.profilePage.newPostText}
-                                                                    addNewPostTextCallback={props.addNewPostTextCallback}
                     />}></Route>
                     <Route path={'/dialogs'} render={() => <Dialogs title={'My Dialogs'}
                                                                     dialogsNames={props.state.dialogsPage.dialogsNames}
