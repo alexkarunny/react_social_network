@@ -1,3 +1,8 @@
+const ADD_POST = 'ADD-POST'
+const ADD_MESSAGE = 'ADD-MESSAGE'
+const ADD_NEW_POST_TEXT = 'ADD-NEW-POST-TEXT'
+const ADD_NEW_MESSAGE_TEXT = 'ADD-NEW-MESSAGE-TEXT'
+
 export type StateType = {
     profilePage: {
         postsTexts: postType[]
@@ -6,6 +11,7 @@ export type StateType = {
     dialogsPage: {
         dialogsNames: dialogNameType[]
         messagesTexts: messageTextType[]
+        newMessageText: string
     }
 }
 export type postType = {
@@ -31,16 +37,31 @@ export type StoreType = {
 
 export const AddPostAC = () => {
     return {
-        type: 'ADD-POST'
+        type: ADD_POST
+    } as const
+}
+export const AddMessageAC = () => {
+    return {
+        type: ADD_MESSAGE
     } as const
 }
 export const AddNewPostTextAC = (newPostText: string) => {
     return {
-        type: 'ADD-NEW-POST-TEXT',
+        type: ADD_NEW_POST_TEXT,
         newPostText: newPostText
     } as const
 }
-export type ActionsTypes = ReturnType<typeof AddPostAC> | ReturnType<typeof AddNewPostTextAC>
+export const AddNewMessageTextAC = (newMessageText: string) => {
+    return {
+        type: ADD_NEW_MESSAGE_TEXT,
+        newMessageText: newMessageText
+    } as const
+}
+export type ActionsTypes =
+    ReturnType<typeof AddPostAC> |
+    ReturnType<typeof AddNewPostTextAC> |
+    ReturnType<typeof AddNewMessageTextAC> |
+    ReturnType<typeof AddMessageAC>
 
 export const store: StoreType = {
     _state: {
@@ -51,7 +72,6 @@ export const store: StoreType = {
                 {id: 3, textPost: 'I got it', likesCount: 3},
             ],
             newPostText: '',
-
         },
         dialogsPage: {
             dialogsNames: [
@@ -65,7 +85,8 @@ export const store: StoreType = {
                 {messageText: 'Hi'},
                 {messageText: 'How are You?'},
                 {messageText: 'At the same time'},
-            ]
+            ],
+            newMessageText: '',
         }
     },
     _rerender() {
@@ -79,7 +100,7 @@ export const store: StoreType = {
     },
 
     dispatch(action) {
-        if (action.type === 'ADD-POST') {
+        if (action.type === ADD_POST) {
             const newPost: postType = {
                 id: new Date().getTime(),
                 textPost: this._state.profilePage.newPostText,
@@ -88,8 +109,15 @@ export const store: StoreType = {
             this._state.profilePage.postsTexts.push(newPost)
             this._state.profilePage.newPostText = ''
             this._rerender();
-        } else if (action.type === 'ADD-NEW-POST-TEXT') {
+        } else if (action.type === ADD_NEW_POST_TEXT) {
             this._state.profilePage.newPostText = action.newPostText
+            this._rerender()
+        } else if (action.type === ADD_NEW_MESSAGE_TEXT) {
+            this._state.dialogsPage.newMessageText = action.newMessageText
+            this._rerender()
+        } else if (action.type === ADD_MESSAGE) {
+            this._state.dialogsPage.messagesTexts.push({messageText : this._state.dialogsPage.newMessageText})
+            this._state.dialogsPage.newMessageText = ''
             this._rerender()
         }
     }

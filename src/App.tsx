@@ -29,7 +29,9 @@ function App(props: AppPropsType) {
                     />}></Route>
                     <Route path={'/dialogs'} render={() => <Dialogs title={'My Dialogs'}
                                                                     dialogsNames={props.state.dialogsPage.dialogsNames}
-                                                                    messagesTexts={props.state.dialogsPage.messagesTexts}/>}></Route>
+                                                                    messagesTexts={props.state.dialogsPage.messagesTexts}
+                                                                    newMessageText={props.state.dialogsPage.newMessageText}
+                                                                    dispatch={props.dispatch}/>}></Route>
                     <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
                     <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
                     <Route path={'/settings'} render={() => <Settings title={'My Settings'}/>}></Route>

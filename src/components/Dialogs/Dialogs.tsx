@@ -1,15 +1,26 @@
 import classes from './Dialogs.module.css'
 import {Dialog} from './Dialog/Dialog';
 import {Message} from './Message/Message';
-import {dialogNameType, messageTextType} from '../../redux/state';
+import {ActionsTypes, AddMessageAC, AddNewMessageTextAC, dialogNameType, messageTextType} from '../../redux/state';
+import {ChangeEvent} from 'react';
 
 type DialogsPropsType = {
     title: string
+    newMessageText: string
     dialogsNames: dialogNameType[]
     messagesTexts: messageTextType[]
+    dispatch: (action: ActionsTypes) => void
 }
 
 export const Dialogs = (props: DialogsPropsType) => {
+    const onChangeAddNewMessageText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(AddNewMessageTextAC(e.currentTarget.value))
+    }
+
+    const onClickAddNewMessage = () => {
+        props.dispatch(AddMessageAC())
+    }
+
     return (
         <div className={classes.dialogs}>
             <h2 className={classes.title}>{props.title}</h2>
@@ -20,6 +31,8 @@ export const Dialogs = (props: DialogsPropsType) => {
             </div>
             <div className={classes.messages_items}>
                 {props.messagesTexts.map((m, i) => <Message key={i} messageText={m.messageText}/>)}
+                <textarea value={props.newMessageText} onChange={onChangeAddNewMessageText}/>
+                <button onClick={onClickAddNewMessage}>Add</button>
             </div>
         </div>
     )
