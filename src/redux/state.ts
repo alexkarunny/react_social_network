@@ -1,18 +1,18 @@
-const ADD_POST = 'ADD-POST'
-const ADD_MESSAGE = 'ADD-MESSAGE'
-const ADD_NEW_POST_TEXT = 'ADD-NEW-POST-TEXT'
-const ADD_NEW_MESSAGE_TEXT = 'ADD-NEW-MESSAGE-TEXT'
+import {AddNewPostTextAC, AddPostAC, profilePageReducer} from './profile-page-reducer';
+import {AddMessageAC, AddNewMessageTextAC, dialogsPageReducer} from './dialogs-page-reducer';
 
 export type StateType = {
-    profilePage: {
-        postsTexts: postType[]
-        newPostText: string
-    }
-    dialogsPage: {
-        dialogsNames: dialogNameType[]
-        messagesTexts: messageTextType[]
-        newMessageText: string
-    }
+    profilePage: ProfilePageType
+    dialogsPage: DialogsPageType
+}
+export type ProfilePageType = {
+    postsTexts: postType[]
+    newPostText: string
+}
+export type DialogsPageType = {
+    dialogsNames: dialogNameType[]
+    messagesTexts: messageTextType[]
+    newMessageText: string
 }
 export type postType = {
     id: number
@@ -35,28 +35,6 @@ export type StoreType = {
     dispatch: (action: ActionsTypes) => void
 }
 
-export const AddPostAC = () => {
-    return {
-        type: ADD_POST
-    } as const
-}
-export const AddMessageAC = () => {
-    return {
-        type: ADD_MESSAGE
-    } as const
-}
-export const AddNewPostTextAC = (newPostText: string) => {
-    return {
-        type: ADD_NEW_POST_TEXT,
-        newPostText: newPostText
-    } as const
-}
-export const AddNewMessageTextAC = (newMessageText: string) => {
-    return {
-        type: ADD_NEW_MESSAGE_TEXT,
-        newMessageText: newMessageText
-    } as const
-}
 export type ActionsTypes =
     ReturnType<typeof AddPostAC> |
     ReturnType<typeof AddNewPostTextAC> |
@@ -100,26 +78,9 @@ export const store: StoreType = {
     },
 
     dispatch(action) {
-        if (action.type === ADD_POST) {
-            const newPost: postType = {
-                id: new Date().getTime(),
-                textPost: this._state.profilePage.newPostText,
-                likesCount: 0
-            }
-            this._state.profilePage.postsTexts.push(newPost)
-            this._state.profilePage.newPostText = ''
-            this._rerender();
-        } else if (action.type === ADD_NEW_POST_TEXT) {
-            this._state.profilePage.newPostText = action.newPostText
-            this._rerender()
-        } else if (action.type === ADD_NEW_MESSAGE_TEXT) {
-            this._state.dialogsPage.newMessageText = action.newMessageText
-            this._rerender()
-        } else if (action.type === ADD_MESSAGE) {
-            this._state.dialogsPage.messagesTexts.push({messageText : this._state.dialogsPage.newMessageText})
-            this._state.dialogsPage.newMessageText = ''
-            this._rerender()
-        }
+        this._state.profilePage = profilePageReducer(this._state.profilePage, action)
+        this._state.dialogsPage = dialogsPageReducer(this._state.dialogsPage, action)
+        this._rerender()
     }
 }
 
