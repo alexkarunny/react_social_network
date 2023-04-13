@@ -8,10 +8,11 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import {Friends} from './components/Friends/Friends';
 import {Video} from './components/Video/Video';
 import {Settings} from './components/Settings/Settings';
-import {ActionsTypes, StateType} from './redux/state';
+import {ActionsTypes} from './redux/store';
+import {RootStateType} from './redux/redux-store';
 
 type AppPropsType = {
-    state: StateType
+    state: RootStateType
     dispatch: (action: ActionsTypes) => void
 }
 

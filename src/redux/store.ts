@@ -1,31 +1,11 @@
-import {AddNewPostTextAC, AddPostAC, profilePageReducer} from './profile-page-reducer';
-import {AddMessageAC, AddNewMessageTextAC, dialogsPageReducer} from './dialogs-page-reducer';
+import {AddNewPostTextAC, AddPostAC, profilePageReducer, ProfilePageType} from './profile-page-reducer';
+import {AddMessageAC, AddNewMessageTextAC, dialogsPageReducer, DialogsPageType} from './dialogs-page-reducer';
 
 export type StateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogsPageType
 }
-export type ProfilePageType = {
-    postsTexts: postType[]
-    newPostText: string
-}
-export type DialogsPageType = {
-    dialogsNames: dialogNameType[]
-    messagesTexts: messageTextType[]
-    newMessageText: string
-}
-export type postType = {
-    id: number
-    textPost: string
-    likesCount: number
-}
-export type dialogNameType = {
-    id: number
-    dialogName: string
-}
-export type messageTextType = {
-    messageText: string
-}
+
 
 export type StoreType = {
     _state: StateType

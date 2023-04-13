@@ -1,9 +1,9 @@
 import classes from './Dialogs.module.css'
 import {Dialog} from './Dialog/Dialog';
 import {Message} from './Message/Message';
-import {ActionsTypes, dialogNameType, messageTextType} from '../../redux/state';
+import {ActionsTypes} from '../../redux/store';
 import {ChangeEvent} from 'react';
-import {AddMessageAC, AddNewMessageTextAC} from '../../redux/dialogs-page-reducer';
+import {AddMessageAC, AddNewMessageTextAC, dialogNameType, messageTextType} from '../../redux/dialogs-page-reducer';
 
 type DialogsPropsType = {
     title: string

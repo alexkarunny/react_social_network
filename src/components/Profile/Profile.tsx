@@ -1,7 +1,8 @@
 import React from 'react';
 import {MyPosts} from './MyPosts/MyPosts';
 import {ProfileInfo} from './ProfileInfo/ProfileInfo';
-import {ActionsTypes, postType} from '../../redux/state';
+import {ActionsTypes} from '../../redux/store';
+import {postType} from '../../redux/profile-page-reducer';
 
 type ProfilePropsType = {
     title: string
