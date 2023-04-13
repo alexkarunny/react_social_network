@@ -1,25 +1,25 @@
 import React, {ChangeEvent} from 'react';
 import classes from './MyPosts.module.css'
 import {Post} from './Post/Post';
-import {ActionsTypes} from '../../../redux/store';
-import {AddNewPostTextAC, AddPostAC, postType} from '../../../redux/profile-page-reducer';
+import {postType} from '../../../redux/profile-page-reducer';
 
 
 type MyPostsPropsType = {
     title: string
     posts: postType[]
-    dispatch: (action: ActionsTypes) => void
+    onChangeAddTextHandler: (title: string) => void
+    onClickAddPostHandler: () => void
     newPostText: string
-
 }
 
 export const MyPosts = (props: MyPostsPropsType) => {
 
     const onChangeAddTextHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch(AddNewPostTextAC(e.currentTarget.value))
+        props.onChangeAddTextHandler(e.currentTarget.value)
+
     }
     const onClickAddPostHandler = () => {
-        props.dispatch(AddPostAC())
+        props.onClickAddPostHandler()
     }
     return (
         <div>
@@ -35,7 +35,9 @@ export const MyPosts = (props: MyPostsPropsType) => {
                 </div>
             </div>
             <div className={classes.postGroup}>
-                {props.posts.map((p, i) => <Post key={p.id + i} textPost={p.textPost} id={p.id}
+                {props.posts.map((p, i) => <Post key={p.id + i}
+                                                 textPost={p.textPost}
+                                                 id={p.id}
                                                  likesCount={p.likesCount}/>)}
             </div>
         </div>

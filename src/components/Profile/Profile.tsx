@@ -1,8 +1,8 @@
 import React from 'react';
-import {MyPosts} from './MyPosts/MyPosts';
 import {ProfileInfo} from './ProfileInfo/ProfileInfo';
 import {ActionsTypes} from '../../redux/store';
 import {postType} from '../../redux/profile-page-reducer';
+import {MyPostsContainer} from './MyPosts/MyPostsContainer';
 
 type ProfilePropsType = {
     title: string
@@ -16,7 +16,7 @@ export const Profile = (props: ProfilePropsType) => {
         <div>
             <h2>{props.title}</h2>
             <ProfileInfo/>
-            <MyPosts title={'My Posts'}
+            <MyPostsContainer
                      posts={props.posts}
                      newPostText={props.newPostText}
                      dispatch={props.dispatch}
