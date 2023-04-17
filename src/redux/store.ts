@@ -1,11 +1,11 @@
 import {AddNewPostTextAC, AddPostAC, profilePageReducer, ProfilePageType} from './profile-page-reducer';
 import {AddMessageAC, AddNewMessageTextAC, dialogsPageReducer, DialogsPageType} from './dialogs-page-reducer';
+import {v1} from 'uuid';
 
 export type StateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogsPageType
 }
-
 
 export type StoreType = {
     _state: StateType
@@ -25,9 +25,9 @@ export const store: StoreType = {
     _state: {
         profilePage: {
             postsTexts: [
-                {id: 1, textPost: 'Today is a great day', likesCount: 1},
-                {id: 2, textPost: 'I\'ll achieve the target', likesCount: 2},
-                {id: 3, textPost: 'I got it', likesCount: 3},
+                {id: v1(), textPost: 'Today is a great day', likesCount: 1},
+                {id: v1(), textPost: 'I\'ll achieve the target', likesCount: 2},
+                {id: v1(), textPost: 'I got it', likesCount: 3},
             ],
             newPostText: '',
         },

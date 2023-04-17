@@ -1,4 +1,5 @@
 import {ActionsTypes} from './store';
+import {v1} from 'uuid';
 
 export const ADD_POST = 'ADD-POST'
 export const ADD_NEW_POST_TEXT = 'ADD-NEW-POST-TEXT'
@@ -15,7 +16,7 @@ export type ProfilePageType = {
 }
 
 export type postType = {
-    id: number
+    id: string
     textPost: string
     likesCount: number
 }
@@ -29,9 +30,9 @@ export const AddNewPostTextAC = (newPostText: string) => {
 
 const InitialState: ProfilePageType = {
     postsTexts: [
-        {id: 1, textPost: 'Today is a great day', likesCount: 1},
-        {id: 2, textPost: 'I\'ll achieve the target', likesCount: 2},
-        {id: 3, textPost: 'I got it', likesCount: 3},
+        {id: v1(), textPost: 'Today is a great day', likesCount: 1},
+        {id: v1(), textPost: 'I\'ll achieve the target', likesCount: 2},
+        {id: v1(), textPost: 'I got it', likesCount: 3},
     ],
     newPostText: '',
 }
@@ -40,16 +41,13 @@ export const profilePageReducer = (state: ProfilePageType = InitialState, action
     switch (action.type) {
         case ADD_POST :
             const newPost: postType = {
-                id: new Date().getTime(),
+                id: v1(),
                 textPost: state.newPostText,
                 likesCount: 0
             }
-            state.postsTexts.push(newPost)
-            state.newPostText = ''
-            return state
+            return {...state, postsTexts: [...state.postsTexts, newPost], newPostText: ''}
         case ADD_NEW_POST_TEXT:
-            state.newPostText = action.newPostText
-            return state
+            return {...state, newPostText: action.newPostText}
         default:
             return state
     }

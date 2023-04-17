@@ -2,7 +2,7 @@ import classes from './Post.module.css'
 import ava from '../../../../src/images/ava.jpg'
 
 type PostPropsType = {
-    id: number
+    id: string
     textPost: string
     likesCount: number
 }
