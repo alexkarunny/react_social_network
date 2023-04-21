@@ -1,8 +1,7 @@
-import {ActionsTypes} from './store';
 import {v1} from 'uuid';
 
-export const ADD_POST = 'ADD-POST'
-export const ADD_NEW_POST_TEXT = 'ADD-NEW-POST-TEXT'
+const ADD_POST = 'ADD-POST'
+const ADD_NEW_POST_TEXT = 'ADD-NEW-POST-TEXT'
 
 export const AddPostAC = () => {
     return {
@@ -36,6 +35,10 @@ const InitialState: ProfilePageType = {
     ],
     newPostText: '',
 }
+
+type ActionsTypes =
+    ReturnType<typeof AddPostAC> |
+    ReturnType<typeof AddNewPostTextAC>
 
 export const profilePageReducer = (state: ProfilePageType = InitialState, action: ActionsTypes) => {
     switch (action.type) {

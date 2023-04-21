@@ -1,4 +1,3 @@
-import {ActionsTypes} from './store';
 
 const ADD_MESSAGE = 'ADD-MESSAGE'
 const ADD_NEW_MESSAGE_TEXT = 'ADD-NEW-MESSAGE-TEXT'
@@ -28,6 +27,10 @@ export const AddNewMessageTextAC = (newMessageText: string) => {
         newMessageText: newMessageText
     } as const
 }
+
+type ActionsTypes =
+    ReturnType<typeof AddNewMessageTextAC> |
+    ReturnType<typeof AddMessageAC>
 
 const InitialState = {
     dialogsNames: [

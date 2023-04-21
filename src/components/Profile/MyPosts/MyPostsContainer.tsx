@@ -23,7 +23,7 @@ const mapStateToProps = (state: RootStateType): mapStatePropsType => {
 
 const mapDispatchToProps = (dispatch: Dispatch):mapDispatchPropsType  => {
     return {
-        onChangeAddTextHandler: (title: string) => {
+        onChangeAddTextHandler: (title) => {
             dispatch(AddNewPostTextAC(title))
         },
         onClickAddPostHandler: () => {

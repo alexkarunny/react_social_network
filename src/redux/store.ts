@@ -1,3 +1,4 @@
+/*
 import {AddNewPostTextAC, AddPostAC, profilePageReducer, ProfilePageType} from './profile-page-reducer';
 import {AddMessageAC, AddNewMessageTextAC, dialogsPageReducer, DialogsPageType} from './dialogs-page-reducer';
 import {v1} from 'uuid';
@@ -15,11 +16,11 @@ export type StoreType = {
     dispatch: (action: ActionsTypes) => void
 }
 
-export type ActionsTypes =
-    ReturnType<typeof AddPostAC> |
-    ReturnType<typeof AddNewPostTextAC> |
+type ActionsTypes =
     ReturnType<typeof AddNewMessageTextAC> |
-    ReturnType<typeof AddMessageAC>
+    ReturnType<typeof AddMessageAC> |
+    ReturnType<typeof AddPostAC> |
+    ReturnType<typeof AddNewPostTextAC>
 
 export const store: StoreType = {
     _state: {
@@ -64,3 +65,4 @@ export const store: StoreType = {
     }
 }
 
+*/
