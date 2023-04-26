@@ -1,20 +1,27 @@
 import {UsersPropsType} from './UsersContainer';
-import {v1} from 'uuid';
 import {UserType} from '../../redux/users-page-reducer';
 import s from './users.module.css'
+import axios from 'axios';
+import avatar from '../../src/images/avatar.png'
+
 
 type PropsType = UsersPropsType
 
-const newUsers: UserType[] = [
-    {id: v1(), photoUrl:'', fullName: 'Shevchenko', isFollowed: false, status: 'Manager', location: {city: 'Flero', country: 'Italy'}},
-    {id: v1(), photoUrl:'', fullName: 'Arveladze', isFollowed: false, status: 'Manager', location: {city: 'Romford', country: 'GB'}},
-    {id: v1(), photoUrl:'', fullName: 'Dragun', isFollowed: false, status: 'Player', location: {city: 'Albasete', country: 'Spain'}},
-]
+type responseType = {
+    items: UserType[]
+    totalCount: number
+    error: string
+}
 
 export const Users = (props: PropsType) => {
 
-    if(props.users.length === 0 ) props.getUsers(newUsers)
+    if(props.users.length === 0 ) {
+        axios.get<responseType>('https://social-network.samuraijs.com/api/1.0/users')
+            .then(response => props.getUsers(response.data.items))
+    }
+
     const users = props.users
+
     return (
         <div>
             <h1>Users</h1>
@@ -27,10 +34,10 @@ export const Users = (props: PropsType) => {
                             props.unFollowUserHandler(u.id)
                         }
                     return <div key={u.id} className={s.userWrapper}>
-                        <img src={u.photoUrl} alt="" className={s.avatar}/>
-                        <span>{u.fullName}</span>
+                        <img src={u.photos.small ? u.photos.small : avatar } alt="" className={s.avatar}/>
+                        <span>{u.name}</span>
                         <span>{u.status}</span>
-                        <span>{u.isFollowed ? ' followed' : ' unfollowed'}</span>
+                        <span>{u.followed ? ' followed' : ' unfollowed'}</span>
                         <button onClick={onClickFollowHandler}>follow</button>
                         <button onClick={onClickUnFollowHandler}>unfollow</button>
                     </div>

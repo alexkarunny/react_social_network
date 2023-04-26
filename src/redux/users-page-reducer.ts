@@ -1,22 +1,16 @@
-import {v1} from 'uuid';
-import avatar from '../src/images/avatar.png'
-
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const GET_USERS = 'GET-USERS'
 
-type LocationType = {
-    city: string
-    country: string
-}
-
 export type UserType = {
-    id: string
-    isFollowed: boolean
-    fullName: string
+    id: number
+    name: string
     status: string
-    photoUrl: string
-    location: LocationType
+    followed: boolean
+    photos: {
+        small: string
+        large: string
+    }
 }
 
 export type InitialStateType = {
@@ -25,9 +19,9 @@ export type InitialStateType = {
 
 const initialState: InitialStateType = {
     users: [
-        {id: v1(), photoUrl:avatar, fullName: 'Pirlo', isFollowed: false, status: 'Manager', location: {city: 'Flero', country: 'Italy'}},
-        {id: v1(), photoUrl:avatar, fullName: 'Lampard', isFollowed: true, status: 'Manager', location: {city: 'Romford', country: 'GB'}},
-        {id: v1(), photoUrl:avatar, fullName: 'Iniesta', isFollowed: false, status: 'Player', location: {city: 'Albasete', country: 'Spain'}},
+       /* {id: 1, name: 'Pirlo', followed: false, status: 'Manager', photos: {small: avatar, large: avatar}},
+        {id: 2, name: 'Lampard', followed: true, status: 'Manager', photos: {small: avatar, large: avatar}},
+        {id: 3, name: 'Iniesta', followed: false, status: 'Player', photos: {small: avatar, large: avatar}},*/
     ]
 }
 
@@ -49,14 +43,14 @@ export const usersPageReducer = (state: InitialStateType = initialState, action:
     }
 }
 
-export const FollowUserAC = (userId: string) => {
+export const FollowUserAC = (userId: number) => {
     return {
         type: FOLLOW,
         userId
     } as const
 }
 
-export const UnFollowUserAC = (userId: string) => {
+export const UnFollowUserAC = (userId: number) => {
     return {
         type: UNFOLLOW,
         userId
