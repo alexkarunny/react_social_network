@@ -15,7 +15,7 @@ type responseType = {
 
 export const Users = (props: PropsType) => {
 
-    if(props.users.length === 0 ) {
+    const addUsersHandler = () => {
         axios.get<responseType>('https://social-network.samuraijs.com/api/1.0/users')
             .then(response => props.getUsers(response.data.items))
     }
@@ -25,6 +25,7 @@ export const Users = (props: PropsType) => {
     return (
         <div>
             <h1>Users</h1>
+            <button onClick={addUsersHandler} className={s.addUserButton}>get users</button>
             {
                 users.map(u => {
                         const onClickFollowHandler = () => {

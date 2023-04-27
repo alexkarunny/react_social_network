@@ -1,3 +1,5 @@
+import avatar from '../src/images/avatar.png'
+
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const GET_USERS = 'GET-USERS'
@@ -19,9 +21,9 @@ export type InitialStateType = {
 
 const initialState: InitialStateType = {
     users: [
-       /* {id: 1, name: 'Pirlo', followed: false, status: 'Manager', photos: {small: avatar, large: avatar}},
+        {id: 1, name: 'Pirlo', followed: false, status: 'Manager', photos: {small: avatar, large: avatar}},
         {id: 2, name: 'Lampard', followed: true, status: 'Manager', photos: {small: avatar, large: avatar}},
-        {id: 3, name: 'Iniesta', followed: false, status: 'Player', photos: {small: avatar, large: avatar}},*/
+        {id: 3, name: 'Iniesta', followed: false, status: 'Player', photos: {small: avatar, large: avatar}},
     ]
 }
 
