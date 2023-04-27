@@ -35,9 +35,9 @@ type ActionsTypes =
 export const usersPageReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case FOLLOW:
-            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, isFollowed: true} : u) }
+            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u) }
         case UNFOLLOW:
-            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, isFollowed: false} : u)}
+            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)}
         case GET_USERS:
             return {...state, users: [...action.users]}
         default:

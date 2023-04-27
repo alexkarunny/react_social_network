@@ -23,7 +23,7 @@ function App() {
                            render={() => <DialogsContainer title={'My dialogs'}
                            />}></Route>
                     <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
-                    <Route path={'/users'} render={() => <UsersContainer />}></Route>
+                    <Route path={'/users'} render={() => <UsersContainer title={'All Users'} />}></Route>
                     <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
                     <Route path={'/settings'} render={() => <Settings title={'My Settings'}/>}></Route>
                 </div>
