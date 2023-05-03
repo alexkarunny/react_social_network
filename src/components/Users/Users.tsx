@@ -5,6 +5,7 @@ import axios from 'axios';
 import avatar from '../../src/images/avatar.png'
 import React from 'react';
 
+
 type responseType = {
     items: UserType[]
     totalCount: number
@@ -14,14 +15,42 @@ type responseType = {
 export class Users extends React.Component<UsersPropsType> {
 
     componentDidMount() {
-        axios.get<responseType>('https://social-network.samuraijs.com/api/1.0/users')
-            .then(response => this.props.getUsers(response.data.items))
+        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
+            .then(response => {
+                this.props.getUsers(response.data.items)
+                this.props.setTotalUsersNumber(response.data.totalCount)
+            })
+    }
+
+    changeCurrentPageHandler = (p: number) => {
+        this.props.changeCurrentPage(p)
+        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${p}`)
+            .then(response => {
+                this.props.getUsers(response.data.items)
+            })
     }
 
     render() {
+        const pagesAmount = Math.ceil(this.props.totalUsersNumber / this.props.pageSize)
+
+        const pages = []
+        for (let i = 1; i <= pagesAmount; i++) {
+            pages.push(i)
+        }
+
         return (
             <div>
                 <h1>{this.props.title}</h1>
+                {
+                    pages.map((p, index) => {
+                        const finalPageClassName = `
+                        ${s.pageNumber}
+                        ${p === this.props.currentPage ? s.activePageNumber : ' '}
+                        `
+                        return <span key={index} className={finalPageClassName}
+                                     onClick={() => this.changeCurrentPageHandler(p)}>{p}</span>
+                    } )
+                }
                 {
                     this.props.users.map(u => {
                         const buttonName = u.followed ? 'unfollow' : 'follow'
