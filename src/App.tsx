@@ -8,7 +8,7 @@ import {Video} from './components/Video/Video';
 import {Settings} from './components/Settings/Settings';
 import {DialogsContainer} from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
-import ProfileContainer from './components/Profile/ProfileContainer';
+import ProfileContainerWithRouter from './components/Profile/ProfileContainer';
 
 function App() {
     return (
@@ -17,7 +17,7 @@ function App() {
                 <Header title={'Header'}/>
                 <NavBar title={'Menu'}/>
                 <div className={classes.app_content}>
-                    <Route path={'/profile'} render={() => <ProfileContainer title={'My Profile'}
+                    <Route path={'/profile/:userId?'} render={() => <ProfileContainerWithRouter title={'My Profile'}
                     />}></Route>
                     <Route path={'/dialogs'}
                            render={() => <DialogsContainer title={'My dialogs'}
