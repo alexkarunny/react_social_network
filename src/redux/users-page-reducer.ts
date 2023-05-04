@@ -39,12 +39,12 @@ const initialState: InitialStateType = {
 }
 
 type ActionsTypes =
-    ReturnType<typeof followUserAC> |
-    ReturnType<typeof unFollowUserAC> |
-    ReturnType<typeof getUsersAC> |
-    ReturnType<typeof setTotalUserNumbersAC> |
-    ReturnType<typeof changeCurrentPageAC> |
-    ReturnType<typeof toggleLoadingImgAC>
+    ReturnType<typeof followUser> |
+    ReturnType<typeof unFollowUser> |
+    ReturnType<typeof getUsers> |
+    ReturnType<typeof setTotalUsersNumber> |
+    ReturnType<typeof changeCurrentPage> |
+    ReturnType<typeof toggleLoadingImg>
 
 export const usersPageReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
@@ -74,42 +74,42 @@ export const usersPageReducer = (state: InitialStateType = initialState, action:
     }
 }
 
-export const followUserAC = (userId: number) => {
+export const followUser = (userId: number) => {
     return {
         type: FOLLOW,
         userId
     } as const
 }
 
-export const unFollowUserAC = (userId: number) => {
+export const unFollowUser = (userId: number) => {
     return {
         type: UNFOLLOW,
         userId
     } as const
 }
 
-export const getUsersAC = (users: UserType[]) => {
+export const getUsers = (users: UserType[]) => {
     return {
         type: GET_USERS,
         users
     } as const
 }
 
-export const setTotalUserNumbersAC = (totalUsersNumber: number) => {
+export const setTotalUsersNumber = (totalUsersNumber: number) => {
     return {
         type: SET_TOTAL_USERS_NUMBER,
         totalUsersNumber
     } as const
 }
 
-export const changeCurrentPageAC = (currentPage: number) => {
+export const changeCurrentPage = (currentPage: number) => {
     return {
         type: CHANGE_CURRENT_PAGE,
         currentPage
     } as const
 }
 
-export const toggleLoadingImgAC = (isLoading: boolean) => {
+export const toggleLoadingImg = (isLoading: boolean) => {
     return {
         type: TOGGLE_LOADING_IMG,
         isLoading

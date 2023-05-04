@@ -8,7 +8,7 @@ import {Friends} from './components/Friends/Friends';
 import {Video} from './components/Video/Video';
 import {Settings} from './components/Settings/Settings';
 import {DialogsContainer} from './components/Dialogs/DialogsContainer';
-import {UsersContainer} from './components/Users/UsersContainer';
+import UsersContainer from './components/Users/UsersContainer';
 
 function App() {
     return (
@@ -23,7 +23,7 @@ function App() {
                            render={() => <DialogsContainer title={'My dialogs'}
                            />}></Route>
                     <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
-                    <Route path={'/users'} render={() => <UsersContainer title={'All Users'} />}></Route>
+                    <Route path={'/users'} render={() => <UsersContainer title={'Users'}/>}></Route>
                     <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
                     <Route path={'/settings'} render={() => <Settings title={'My Settings'}/>}></Route>
                 </div>
