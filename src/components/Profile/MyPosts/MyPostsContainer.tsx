@@ -1,4 +1,4 @@
-import {AddNewPostTextAC, AddPostAC, postType} from '../../../redux/profile-page-reducer';
+import {addNewPostText, addPost, postType} from '../../../redux/profile-page-reducer';
 import {MyPosts} from './MyPosts';
 import {connect} from 'react-redux';
 import {RootStateType} from '../../../redux/redux-store';
@@ -24,10 +24,10 @@ const mapStateToProps = (state: RootStateType): mapStatePropsType => {
 const mapDispatchToProps = (dispatch: Dispatch):mapDispatchPropsType  => {
     return {
         onChangeAddTextHandler: (title) => {
-            dispatch(AddNewPostTextAC(title))
+            dispatch(addNewPostText(title))
         },
         onClickAddPostHandler: () => {
-            dispatch(AddPostAC())
+            dispatch(addPost())
         }
     }
 }

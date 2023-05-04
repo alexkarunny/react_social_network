@@ -2,16 +2,14 @@ import {v1} from 'uuid';
 
 const ADD_POST = 'ADD-POST'
 const ADD_NEW_POST_TEXT = 'ADD-NEW-POST-TEXT'
+const GET_PROFILE = 'GET-PROFILE'
 
-export const AddPostAC = () => {
-    return {
-        type: ADD_POST
-    } as const
-}
+
 
 export type ProfilePageType = {
     postsTexts: postType[]
     newPostText: string
+    profile?: ProfileType
 }
 
 export type postType = {
@@ -20,11 +18,29 @@ export type postType = {
     likesCount: number
 }
 
-export const AddNewPostTextAC = (newPostText: string) => {
-    return {
-        type: ADD_NEW_POST_TEXT,
-        newPostText: newPostText
-    } as const
+type ContactsType = {
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+}
+type PhotosType = {
+    small: string
+    large: string
+}
+
+export type ProfileType = {
+    aboutMe: string
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: ContactsType
+    photos: PhotosType
 }
 
 const InitialState: ProfilePageType = {
@@ -37,8 +53,9 @@ const InitialState: ProfilePageType = {
 }
 
 type ActionsTypes =
-    ReturnType<typeof AddPostAC> |
-    ReturnType<typeof AddNewPostTextAC>
+    ReturnType<typeof addPost> |
+    ReturnType<typeof addNewPostText> |
+    ReturnType<typeof  getProfile>
 
 export const profilePageReducer = (state: ProfilePageType = InitialState, action: ActionsTypes) => {
     switch (action.type) {
@@ -51,7 +68,33 @@ export const profilePageReducer = (state: ProfilePageType = InitialState, action
             return {...state, postsTexts: [...state.postsTexts, newPost], newPostText: ''}
         case ADD_NEW_POST_TEXT:
             return {...state, newPostText: action.newPostText}
+        case GET_PROFILE:
+            return {
+                ...state,
+                profile: action.profile
+            }
         default:
             return state
     }
+}
+
+
+export const addPost = () => {
+    return {
+        type: ADD_POST
+    } as const
+}
+
+export const addNewPostText = (newPostText: string) => {
+    return {
+        type: ADD_NEW_POST_TEXT,
+        newPostText: newPostText
+    } as const
+}
+
+export const getProfile = (profile: ProfileType ) => {
+    return {
+        type: GET_PROFILE,
+        profile
+    }as const
 }
