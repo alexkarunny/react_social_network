@@ -3,15 +3,16 @@ import {Users} from './Users';
 import {RootStateType} from '../../redux/redux-store';
 import {
     changeCurrentPageAC,
-    FollowUserAC,
-    GetUsersAC,
-    setTotalUserNumbersAC,
-    UnFollowUserAC,
+    followUserAC,
+    getUsersAC,
+    setTotalUserNumbersAC, toggleLoadingImgAC,
+    unFollowUserAC,
     UserType
 } from '../../redux/users-page-reducer';
 import {Dispatch} from 'redux';
 import React from 'react';
 import axios from 'axios';
+import {Preloader} from '../Common/Preloader/Preloader';
 
 type OwnPropsType = {
     title: string
@@ -23,6 +24,7 @@ type MapStatePropsType = {
     currentPage: number
     pageSize: number
     totalUsersNumber: number
+    isLoading: boolean
 }
 
 type MapDispatchPropsType = {
@@ -31,6 +33,7 @@ type MapDispatchPropsType = {
     getUsers: (users: UserType[]) => void
     setTotalUsersNumber: (totalUsersNumber: number) => void
     changeCurrentPage: (currentPage: number) => void
+    toggleLoadingImg: (isLoading: boolean) => void
 }
 
 type responseType = {
@@ -42,23 +45,29 @@ type responseType = {
 export class UsersAPI extends React.Component<UsersAPIPropsType> {
 
     componentDidMount() {
+        this.props.toggleLoadingImg(true)
         axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
             .then(response => {
                 this.props.getUsers(response.data.items)
                 this.props.setTotalUsersNumber(response.data.totalCount)
+                this.props.toggleLoadingImg(false)
             })
     }
 
     changeCurrentPageHandler = (p: number) => {
+        this.props.toggleLoadingImg(true)
         this.props.changeCurrentPage(p)
         axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${p}`)
             .then(response => {
                 this.props.getUsers(response.data.items)
+                this.props.toggleLoadingImg(false)
             })
     }
 
     render() {
-      return  <Users users={this.props.users}
+      return <div>
+          {this.props.isLoading && <Preloader />}
+          <Users users={this.props.users}
                      totalUsersNumber={this.props.totalUsersNumber}
                      title={this.props.title}
                      currentPage={this.props.currentPage}
@@ -67,6 +76,7 @@ export class UsersAPI extends React.Component<UsersAPIPropsType> {
                      followUserCallback={this.props.followUserCallback}
                      unFollowUserCallback={this.props.unFollowUserCallback}
       />
+      </div>
     }
 }
 
@@ -77,25 +87,29 @@ export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
         currentPage: state.usersPage.currentPage,
         pageSize: state.usersPage.pageSize,
         totalUsersNumber: state.usersPage.totalUsersNumber,
+        isLoading: state.usersPage.isLoading,
     }
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     return {
         followUserCallback: (userId) => {
-            dispatch(FollowUserAC(userId))
+            dispatch(followUserAC(userId))
         },
         unFollowUserCallback: (userId) => {
-            dispatch(UnFollowUserAC(userId))
+            dispatch(unFollowUserAC(userId))
         },
         getUsers: (users) => {
-            dispatch(GetUsersAC(users))
+            dispatch(getUsersAC(users))
         },
         setTotalUsersNumber: (totalUsersNumber) => {
             dispatch(setTotalUserNumbersAC(totalUsersNumber))
         },
         changeCurrentPage: (currentPage) => {
             dispatch(changeCurrentPageAC(currentPage))
+        },
+        toggleLoadingImg: (isLoading) => {
+            dispatch(toggleLoadingImgAC(isLoading))
         }
     }
 }
