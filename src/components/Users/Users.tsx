@@ -1,80 +1,79 @@
-import {UsersPropsType} from './UsersContainer';
-import {UserType} from '../../redux/users-page-reducer';
-import s from './users.module.css'
-import axios from 'axios';
-import avatar from '../../src/images/avatar.png'
 import React from 'react';
+import s from './users.module.css';
+import avatar from '../../src/images/avatar.png';
+import {UserType} from '../../redux/users-page-reducer';
 
-
-type responseType = {
-    items: UserType[]
-    totalCount: number
-    error: string
+type PropsType = {
+    users: UserType[]
+    totalUsersNumber: number
+    pageSize: number
+    title: string
+    currentPage: number
+    changeCurrentPageCallback:  (p: number) => void
+    unFollowUserCallback: (id: number) => void
+    followUserCallback: (id: number) => void
 }
 
-export class Users extends React.Component<UsersPropsType> {
+export const Users = (props: PropsType) => {
+    const pagesAmount = Math.ceil(props.totalUsersNumber / props.pageSize)
 
-    componentDidMount() {
-        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
-            .then(response => {
-                this.props.getUsers(response.data.items)
-                this.props.setTotalUsersNumber(response.data.totalCount)
-            })
+    const pages = []
+    for (let i = 1; i <= pagesAmount; i++) {
+        pages.push(i)
+    }
+    const  changeCurrentPageHandler = (p: number) => {
+        props.changeCurrentPageCallback(p)
     }
 
-    changeCurrentPageHandler = (p: number) => {
-        this.props.changeCurrentPage(p)
-        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${p}`)
-            .then(response => {
-                this.props.getUsers(response.data.items)
-            })
+    const unFollowUserHandler = (id: number) => {
+        props.unFollowUserCallback(id)
+    }
+    const followUserHandler = (id: number) => {
+        props.followUserCallback(id)
     }
 
-    render() {
-        const pagesAmount = Math.ceil(this.props.totalUsersNumber / this.props.pageSize)
-
-        const pages = []
-        for (let i = 1; i <= pagesAmount; i++) {
-            pages.push(i)
-        }
-
-        return (
-            <div>
-                <h1>{this.props.title}</h1>
-                {
-                    pages.map((p, index) => {
-                        const finalPageClassName = `
+    return (
+        <div>
+            <h1>{props.title}</h1>
+            {
+                pages.map((p, index) => {
+                    const finalPageClassName = `
                         ${s.pageNumber}
-                        ${p === this.props.currentPage ? s.activePageNumber : ' '}
+                        ${p === props.currentPage ? s.activePageNumber : ' '}
                         `
-                        return <span key={index} className={finalPageClassName}
-                                     onClick={() => this.changeCurrentPageHandler(p)}>{p}</span>
-                    } )
-                }
-                {
-                    this.props.users.map(u => {
-                        const buttonName = u.followed ? 'unfollow' : 'follow'
-                        const spanTitle = u.followed ? ' followed' : ' unfollowed'
-                        const onClickHandler = () => {
-                            if (u.followed) {
-                                this.props.unFollowUserHandler(u.id)
-                            } else {
-                                this.props.followUserHandler(u.id)
-                            }
+                    return <span key={index} className={finalPageClassName}
+                                 onClick={() => changeCurrentPageHandler(p)}>{p}</span>
+                } )
+            }
+            {
+                props.users.map(u => {
+                    const buttonName = u.followed ? 'unfollow' : 'follow'
+                    const spanTitle = u.followed ? ' followed' : ' unfollowed'
+                    const onClickHandler = () => {
+                        if (u.followed) {
+                            unFollowUserHandler(u.id)
+                        } else {
+                            followUserHandler(u.id)
                         }
+                    }
 
-                        return <div key={u.id} className={s.userWrapper}>
-                            <img src={u.photos.small ? u.photos.small : avatar} alt="" className={s.avatar}/>
-                            <span>{u.name}</span>
-                            <span>{u.status}</span>
-                            <span>{spanTitle}</span>
-                            <button onClick={onClickHandler}>{buttonName}</button>
+                    return <div key={u.id} className={s.userWrapper}>
+                        <img src={u.photos.small ? u.photos.small : avatar} alt="" className={s.avatar}/>
+                        <span>{u.name}</span>
+                        <span>{u.status}</span>
+                        <span>{spanTitle}</span>
+                        <button onClick={onClickHandler}>{buttonName}</button>
 
-                        </div>
-                    })
-                }
-            </div>
-        )
-    }
-}
+                    </div>
+                })
+            }
+        </div>
+    )
+};
+
+
+
+
+
+
 

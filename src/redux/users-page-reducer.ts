@@ -30,7 +30,7 @@ const initialState: InitialStateType = {
         {id: 2, name: 'Lampard', followed: true, status: 'Manager', photos: {small: avatar, large: avatar}},
         {id: 3, name: 'Iniesta', followed: false, status: 'Player', photos: {small: avatar, large: avatar}},
     ],
-    currentPage: 4,
+    currentPage: 1,
     pageSize: 100,
     totalUsersNumber: 0
 }

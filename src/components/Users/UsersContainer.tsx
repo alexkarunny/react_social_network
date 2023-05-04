@@ -10,10 +10,13 @@ import {
     UserType
 } from '../../redux/users-page-reducer';
 import {Dispatch} from 'redux';
+import React from 'react';
+import axios from 'axios';
 
 type OwnPropsType = {
     title: string
 }
+
 
 type MapStatePropsType = {
     users: UserType[]
@@ -23,12 +26,50 @@ type MapStatePropsType = {
 }
 
 type MapDispatchPropsType = {
-    followUserHandler: (userId: number) => void
-    unFollowUserHandler: (userId: number) => void
+    followUserCallback: (userId: number) => void
+    unFollowUserCallback: (userId: number) => void
     getUsers: (users: UserType[]) => void
     setTotalUsersNumber: (totalUsersNumber: number) => void
     changeCurrentPage: (currentPage: number) => void
 }
+
+type responseType = {
+    items: UserType[]
+    totalCount: number
+    error: string
+}
+
+export class UsersAPI extends React.Component<UsersAPIPropsType> {
+
+    componentDidMount() {
+        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
+            .then(response => {
+                this.props.getUsers(response.data.items)
+                this.props.setTotalUsersNumber(response.data.totalCount)
+            })
+    }
+
+    changeCurrentPageHandler = (p: number) => {
+        this.props.changeCurrentPage(p)
+        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${p}`)
+            .then(response => {
+                this.props.getUsers(response.data.items)
+            })
+    }
+
+    render() {
+      return  <Users users={this.props.users}
+                     totalUsersNumber={this.props.totalUsersNumber}
+                     title={this.props.title}
+                     currentPage={this.props.currentPage}
+                     pageSize={this.props.pageSize}
+                     changeCurrentPageCallback={this.changeCurrentPageHandler}
+                     followUserCallback={this.props.followUserCallback}
+                     unFollowUserCallback={this.props.unFollowUserCallback}
+      />
+    }
+}
+
 
 export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
     return {
@@ -41,10 +82,10 @@ export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 
 export const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     return {
-        followUserHandler: (userId) => {
+        followUserCallback: (userId) => {
             dispatch(FollowUserAC(userId))
         },
-        unFollowUserHandler: (userId) => {
+        unFollowUserCallback: (userId) => {
             dispatch(UnFollowUserAC(userId))
         },
         getUsers: (users) => {
@@ -59,6 +100,6 @@ export const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => 
     }
 }
 
-export type UsersPropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
+export type UsersAPIPropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users)
+export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersAPI)
