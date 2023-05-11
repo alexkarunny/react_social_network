@@ -1,4 +1,15 @@
 .header {
     grid-area: header;
-    background-color: #00f;
+    background-color: rgba(121, 121, 122, 0.40);
+    padding: 15px;
+}
+
+.userDataBlock {
+    display: flex;
+    flex-direction: column ;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
 }

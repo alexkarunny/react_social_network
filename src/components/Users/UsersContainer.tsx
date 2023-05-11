@@ -42,7 +42,7 @@ type responseType = {
     error: string
 }
 
-type UsersContainerPropsType =   MapStatePropsType & MapDispatchPropsType  & OwnPropsType
+type UsersContainerPropsType = MapStatePropsType & MapDispatchPropsType  & OwnPropsType
 
 class UsersContainer extends React.Component<UsersContainerPropsType> {
 

@@ -1,14 +1,27 @@
 import React from 'react';
 import classes from './Header.module.css'
+import {NavLink} from 'react-router-dom';
 
 type HeaderPropsType = {
-    title: string
+    email: string | null
+    login: string | null
+    isAuth: boolean
 }
 
 export const Header = (props: HeaderPropsType) => {
+    const {email, login, isAuth} = props
     return (
         <div className={classes.header}>
-            <h2>{props.title}</h2>
+
+            {
+                isAuth
+                    ?<div className={classes.userDataBlock}>
+                        <span>{login}</span>
+                        <span>{email}</span>
+                    </div>
+                    : <NavLink to={'/login'}>Login</NavLink>
+            }
+
         </div>
     )
 }

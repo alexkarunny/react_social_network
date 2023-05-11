@@ -1,6 +1,5 @@
 import React from 'react';
 import classes from './App.module.css';
-import {Header} from './components/Header/Header';
 import {NavBar} from './components/Navbar/NavBar';
 import {BrowserRouter, Route} from 'react-router-dom';
 import {Friends} from './components/Friends/Friends';
@@ -9,12 +8,13 @@ import {Settings} from './components/Settings/Settings';
 import {DialogsContainer} from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainerWithRouter from './components/Profile/ProfileContainer';
+import HeaderContainer from './components/Header/HeaderContainer';
 
 function App() {
     return (
         <BrowserRouter>
             <div className={classes.app}>
-                <Header title={'Header'}/>
+                <HeaderContainer />
                 <NavBar title={'Menu'}/>
                 <div className={classes.app_content}>
                     <Route path={'/profile/:userId?'} render={() => <ProfileContainerWithRouter title={'My Profile'}
