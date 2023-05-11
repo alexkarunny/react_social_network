@@ -6,6 +6,7 @@ const GET_USERS = 'GET-USERS'
 const SET_TOTAL_USERS_NUMBER = 'SET-TOTAL-USERS-NUMBER'
 const CHANGE_CURRENT_PAGE = 'CHANGE-CURRENT-PAGE'
 const TOGGLE_LOADING_IMG = 'TOGGLE-LOADING-IMG'
+const TOGGLE_FOLLOW_BUTTON = 'TOGGLE-FOLLOW-BUTTON'
 
 export type UserType = {
     id: number
@@ -24,6 +25,8 @@ export type InitialStateType = {
     pageSize: number
     totalUsersNumber: number
     isLoading: boolean
+    isFollowing: boolean
+    disabledUsers: number[]
 }
 
 const initialState: InitialStateType = {
@@ -36,6 +39,8 @@ const initialState: InitialStateType = {
     pageSize: 100,
     totalUsersNumber: 0,
     isLoading: false,
+    isFollowing: false,
+    disabledUsers: []
 }
 
 type ActionsTypes =
@@ -44,7 +49,8 @@ type ActionsTypes =
     ReturnType<typeof getUsers> |
     ReturnType<typeof setTotalUsersNumber> |
     ReturnType<typeof changeCurrentPage> |
-    ReturnType<typeof toggleLoadingImg>
+    ReturnType<typeof toggleLoadingImg> |
+    ReturnType<typeof toggleFollowButton>
 
 export const usersPageReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
@@ -68,6 +74,15 @@ export const usersPageReducer = (state: InitialStateType = initialState, action:
             return {
                 ...state,
                 isLoading: action.isLoading
+            }
+        case 'TOGGLE-FOLLOW-BUTTON':
+
+            return {
+                ...state,
+                isFollowing: action.isFollowing,
+                disabledUsers: action.isFollowing
+                    ? [...state.disabledUsers, action.userId]
+                    : state.disabledUsers.filter(u => u !== action.userId)
             }
         default:
             return state
@@ -113,6 +128,14 @@ export const toggleLoadingImg = (isLoading: boolean) => {
     return {
         type: TOGGLE_LOADING_IMG,
         isLoading
+    } as const
+}
+
+export const toggleFollowButton = (isFollowing: boolean, userId: number) => {
+    return {
+        type: TOGGLE_FOLLOW_BUTTON,
+        isFollowing,
+        userId
     } as const
 }
 

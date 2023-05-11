@@ -11,9 +11,12 @@ type PropsType = {
     pageSize: number
     title: string
     currentPage: number
+    isFollowing: boolean
+    disabledUsers: number[]
     changeCurrentPageCallback: (p: number) => void
     unFollowUserCallback: (id: number) => void
     followUserCallback: (id: number) => void
+    toggleFollowButton: (isFollowing: boolean, userId: number) => void
 }
 
 export const Users = (props: PropsType) => {
@@ -53,18 +56,22 @@ export const Users = (props: PropsType) => {
                     const spanTitle = u.followed ? ' followed' : ' unfollowed'
                     const onClickHandler = () => {
                         if (u.followed) {
-
+                            props.toggleFollowButton(true, u.id)
                             usersApi.unFollowUser(u.id).then(data => {
                                 if (data.resultCode === 0) {
                                     unFollowUserHandler(u.id)
                                 }
+                                props.toggleFollowButton(false, u.id)
                             })
 
+
                         } else {
+                            props.toggleFollowButton(true, u.id)
                             usersApi.followUser(u.id).then(data => {
                                 if (data.resultCode === 0) {
                                     followUserHandler(u.id)
                                 }
+                                props.toggleFollowButton(false, u.id)
                             })
 
                         }
@@ -76,7 +83,7 @@ export const Users = (props: PropsType) => {
                         <span>{u.name}</span>
                         <span>{u.status}</span>
                         <span>{spanTitle}</span>
-                        <button onClick={onClickHandler}>{buttonName}</button>
+                        <button disabled={props.disabledUsers.some(n => n === u.id)} onClick={onClickHandler}>{buttonName}</button>
 
                     </div>
                 })
