@@ -11,8 +11,8 @@ import {
     UserType
 } from '../../redux/users-page-reducer';
 import React from 'react';
-import axios from 'axios';
 import {Preloader} from '../Common/Preloader/Preloader';
+import {usersApi} from '../../api/api';
 
 type OwnPropsType = {
     title: string
@@ -36,11 +36,7 @@ type MapDispatchPropsType = {
     toggleLoadingImg: (isLoading: boolean) => void
 }
 
-type responseType = {
-    items: UserType[]
-    totalCount: number
-    error: string
-}
+
 
 type UsersContainerPropsType = MapStatePropsType & MapDispatchPropsType  & OwnPropsType
 
@@ -48,12 +44,9 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
 
     componentDidMount() {
         this.props.toggleLoadingImg(true)
-        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`, {
-            withCredentials: true
-        })
-            .then(response => {
-                this.props.getUsers(response.data.items)
-                this.props.setTotalUsersNumber(response.data.totalCount)
+        usersApi.getUsers(this.props.pageSize, this.props.currentPage).then(data => {
+                this.props.getUsers(data.items)
+                this.props.setTotalUsersNumber(data.totalCount)
                 this.props.toggleLoadingImg(false)
             })
     }
@@ -61,11 +54,9 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
     changeCurrentPageHandler = (p: number) => {
         this.props.toggleLoadingImg(true)
         this.props.changeCurrentPage(p)
-        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${p}`, {
-            withCredentials: true
-        })
-            .then(response => {
-                this.props.getUsers(response.data.items)
+        usersApi.getUsers(this.props.pageSize, p)
+            .then(data => {
+                this.props.getUsers(data.items)
                 this.props.toggleLoadingImg(false)
             })
     }

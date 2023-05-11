@@ -3,7 +3,7 @@ import s from './users.module.css';
 import avatar from '../../src/images/avatar.png';
 import {UserType} from '../../redux/users-page-reducer';
 import {NavLink} from 'react-router-dom';
-import axios from 'axios';
+import {usersApi} from '../../api/api';
 
 type PropsType = {
     users: UserType[]
@@ -11,15 +11,9 @@ type PropsType = {
     pageSize: number
     title: string
     currentPage: number
-    changeCurrentPageCallback:  (p: number) => void
+    changeCurrentPageCallback: (p: number) => void
     unFollowUserCallback: (id: number) => void
     followUserCallback: (id: number) => void
-}
-
-type FollowResponseType = {
-    resultCode: number
-    messages: string[]
-    data: {}
 }
 
 export const Users = (props: PropsType) => {
@@ -29,7 +23,7 @@ export const Users = (props: PropsType) => {
     for (let i = 1; i <= pagesAmount; i++) {
         pages.push(i)
     }
-    const  changeCurrentPageHandler = (p: number) => {
+    const changeCurrentPageHandler = (p: number) => {
         props.changeCurrentPageCallback(p)
     }
 
@@ -51,7 +45,7 @@ export const Users = (props: PropsType) => {
                         `
                     return <span key={index} className={finalPageClassName}
                                  onClick={() => changeCurrentPageHandler(p)}>{p}</span>
-                } )
+                })
             }
             {
                 props.users.map(u => {
@@ -60,22 +54,15 @@ export const Users = (props: PropsType) => {
                     const onClickHandler = () => {
                         if (u.followed) {
 
-                            axios.delete<FollowResponseType>(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
-                                withCredentials: true
-                            }).then(res => {
-                                if(res.data.resultCode === 0 ) {
+                            usersApi.unFollowUser(u.id).then(data => {
+                                if (data.resultCode === 0) {
                                     unFollowUserHandler(u.id)
                                 }
                             })
 
                         } else {
-                            axios.post<FollowResponseType>(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
-                                withCredentials: true,
-                                headers: {
-                                    'API-KEY': '88c27098-d58c-439b-a5fb-d6a202fce25b'
-                                }
-                            }).then(res => {
-                                if(res.data.resultCode === 0) {
+                            usersApi.followUser(u.id).then(data => {
+                                if (data.resultCode === 0) {
                                     followUserHandler(u.id)
                                 }
                             })
@@ -84,8 +71,8 @@ export const Users = (props: PropsType) => {
                     }
 
                     return <div key={u.id} className={s.userWrapper}>
-                        <NavLink to={`/profile/${u.id}`} ><img src={u.photos.small ? u.photos.small : avatar} alt=""
-                                      className={s.avatar}/></NavLink>
+                        <NavLink to={`/profile/${u.id}`}><img src={u.photos.small ? u.photos.small : avatar} alt=""
+                                                              className={s.avatar}/></NavLink>
                         <span>{u.name}</span>
                         <span>{u.status}</span>
                         <span>{spanTitle}</span>
