@@ -48,7 +48,9 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
 
     componentDidMount() {
         this.props.toggleLoadingImg(true)
-        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
+        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`, {
+            withCredentials: true
+        })
             .then(response => {
                 this.props.getUsers(response.data.items)
                 this.props.setTotalUsersNumber(response.data.totalCount)
@@ -59,7 +61,9 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
     changeCurrentPageHandler = (p: number) => {
         this.props.toggleLoadingImg(true)
         this.props.changeCurrentPage(p)
-        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${p}`)
+        axios.get<responseType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${p}`, {
+            withCredentials: true
+        })
             .then(response => {
                 this.props.getUsers(response.data.items)
                 this.props.toggleLoadingImg(false)
