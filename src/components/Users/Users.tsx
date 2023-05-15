@@ -3,7 +3,6 @@ import s from './users.module.css';
 import avatar from '../../src/images/avatar.png';
 import {UserType} from '../../redux/users-page-reducer';
 import {NavLink} from 'react-router-dom';
-import {usersApi} from '../../api/api';
 
 type PropsType = {
     users: UserType[]
@@ -11,30 +10,18 @@ type PropsType = {
     pageSize: number
     title: string
     currentPage: number
-    isFollowing: boolean
     disabledUsers: number[]
-    changeCurrentPageCallback: (p: number) => void
-    unFollowUserCallback: (id: number) => void
-    followUserCallback: (id: number) => void
-    toggleFollowButton: (isFollowing: boolean, userId: number) => void
+    changeCurrentPageCallback: (page: number) => void
+    followUserCallback: (userId: number, isFollowed: boolean) => void
 }
 
 export const Users = (props: PropsType) => {
     const pagesAmount = Math.ceil(props.totalUsersNumber / props.pageSize)
 
     const pages = []
+
     for (let i = 1; i <= pagesAmount; i++) {
         pages.push(i)
-    }
-    const changeCurrentPageHandler = (p: number) => {
-        props.changeCurrentPageCallback(p)
-    }
-
-    const unFollowUserHandler = (id: number) => {
-        props.unFollowUserCallback(id)
-    }
-    const followUserHandler = (id: number) => {
-        props.followUserCallback(id)
     }
 
     return (
@@ -42,49 +29,43 @@ export const Users = (props: PropsType) => {
             <h1>{props.title}</h1>
             {
                 pages.map((p, index) => {
+
                     const finalPageClassName = `
                         ${s.pageNumber}
                         ${p === props.currentPage ? s.activePageNumber : ' '}
                         `
+                    const changeCurrentPageHandler = () => {
+                        props.changeCurrentPageCallback(p)
+                    }
+
                     return <span key={index} className={finalPageClassName}
-                                 onClick={() => changeCurrentPageHandler(p)}>{p}</span>
+                                 onClick={changeCurrentPageHandler}>{p}</span>
                 })
             }
             {
                 props.users.map(u => {
                     const buttonName = u.followed ? 'unfollow' : 'follow'
                     const spanTitle = u.followed ? ' followed' : ' unfollowed'
+
                     const onClickHandler = () => {
                         if (u.followed) {
-                            props.toggleFollowButton(true, u.id)
-                            usersApi.unFollowUser(u.id).then(data => {
-                                if (data.resultCode === 0) {
-                                    unFollowUserHandler(u.id)
-                                }
-                                props.toggleFollowButton(false, u.id)
-                            })
-
-
+                            props.followUserCallback(u.id, u.followed)
                         } else {
-                            props.toggleFollowButton(true, u.id)
-                            usersApi.followUser(u.id).then(data => {
-                                if (data.resultCode === 0) {
-                                    followUserHandler(u.id)
-                                }
-                                props.toggleFollowButton(false, u.id)
-                            })
-
+                            props.followUserCallback(u.id, u.followed)
                         }
                     }
 
                     return <div key={u.id} className={s.userWrapper}>
-                        <NavLink to={`/profile/${u.id}`}><img src={u.photos.small ? u.photos.small : avatar} alt=""
-                                                              className={s.avatar}/></NavLink>
+                        <NavLink to={`/profile/${u.id}`}><img src={u.photos.small ? u.photos.small : avatar}
+                                                              alt=""
+                                                              className={s.avatar}
+                        />
+                        </NavLink>
                         <span>{u.name}</span>
                         <span>{u.status}</span>
                         <span>{spanTitle}</span>
-                        <button disabled={props.disabledUsers.some(n => n === u.id)} onClick={onClickHandler}>{buttonName}</button>
-
+                        <button disabled={props.disabledUsers.some(n => n === u.id)}
+                                onClick={onClickHandler}>{buttonName}</button>
                     </div>
                 })
             }

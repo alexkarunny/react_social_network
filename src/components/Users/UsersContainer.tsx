@@ -1,23 +1,13 @@
 import {connect} from 'react-redux';
 import {Users} from './Users';
 import {RootStateType} from '../../redux/redux-store';
-import {
-    changeCurrentPage,
-    followUser,
-    getUsers,
-    setTotalUsersNumber, toggleFollowButton,
-    toggleLoadingImg,
-    unFollowUser,
-    UserType
-} from '../../redux/users-page-reducer';
+import {changeCurrentPage, followUser, getUsers, UserType} from '../../redux/users-page-reducer';
 import React from 'react';
 import {Preloader} from '../Common/Preloader/Preloader';
-import {usersApi} from '../../api/api';
 
 type OwnPropsType = {
     title: string
 }
-
 
 type MapStatePropsType = {
     users: UserType[]
@@ -25,42 +15,25 @@ type MapStatePropsType = {
     pageSize: number
     totalUsersNumber: number
     isLoading: boolean
-    isFollowing: boolean
     disabledUsers: number[]
 }
 
 type MapDispatchPropsType = {
-    followUser: (userId: number) => void
-    unFollowUser: (userId: number) => void
-    getUsers: (users: UserType[]) => void
-    setTotalUsersNumber: (totalUsersNumber: number) => void
-    changeCurrentPage: (currentPage: number) => void
-    toggleLoadingImg: (isLoading: boolean) => void
-    toggleFollowButton: (isFollowing: boolean, userId: number) => void
+    followUser: (userId: number, isFollowed: boolean) => void
+    changeCurrentPage: (page: number, pageSize: number) => void
+    getUsers: (pageSize: number, currentPage: number) => void
 }
-
 
 type UsersContainerPropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 
 class UsersContainer extends React.Component<UsersContainerPropsType> {
 
     componentDidMount() {
-        this.props.toggleLoadingImg(true)
-        usersApi.getUsers(this.props.pageSize, this.props.currentPage).then(data => {
-            this.props.getUsers(data.items)
-            this.props.setTotalUsersNumber(data.totalCount)
-            this.props.toggleLoadingImg(false)
-        })
+        this.props.getUsers(this.props.pageSize, this.props.currentPage)
     }
 
-    changeCurrentPageHandler = (p: number) => {
-        this.props.toggleLoadingImg(true)
-        this.props.changeCurrentPage(p)
-        usersApi.getUsers(this.props.pageSize, p)
-            .then(data => {
-                this.props.getUsers(data.items)
-                this.props.toggleLoadingImg(false)
-            })
+    changeCurrenPageCallback = (page: number) => {
+        this.props.changeCurrentPage(page, this.props.pageSize)
     }
 
     render() {
@@ -71,13 +44,9 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
                    title={this.props.title}
                    currentPage={this.props.currentPage}
                    pageSize={this.props.pageSize}
-                   changeCurrentPageCallback={this.changeCurrentPageHandler}
+                   changeCurrentPageCallback={this.changeCurrenPageCallback}
                    followUserCallback={this.props.followUser}
-                   unFollowUserCallback={this.props.unFollowUser}
                    disabledUsers={this.props.disabledUsers}
-                   isFollowing={this.props.isFollowing}
-                   toggleFollowButton={this.props.toggleFollowButton}
-
             />
         </div>
     }
@@ -90,18 +59,12 @@ export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
         pageSize: state.usersPage.pageSize,
         totalUsersNumber: state.usersPage.totalUsersNumber,
         isLoading: state.usersPage.isLoading,
-        isFollowing: state.usersPage.isFollowing,
         disabledUsers: state.usersPage.disabledUsers
-
     }
 }
 
-
 export default connect(mapStateToProps, {
     followUser,
-    unFollowUser,
-    getUsers,
-    setTotalUsersNumber,
     changeCurrentPage,
-    toggleLoadingImg, toggleFollowButton
+    getUsers
 })(UsersContainer)

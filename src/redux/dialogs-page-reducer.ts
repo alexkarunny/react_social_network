@@ -1,4 +1,3 @@
-
 const ADD_MESSAGE = 'ADD-MESSAGE'
 const ADD_NEW_MESSAGE_TEXT = 'ADD-NEW-MESSAGE-TEXT'
 
@@ -28,7 +27,7 @@ export const AddNewMessageTextAC = (newMessageText: string) => {
     } as const
 }
 
-type ActionsTypes =
+export type DialogsActionsTypes =
     ReturnType<typeof AddNewMessageTextAC> |
     ReturnType<typeof AddMessageAC>
 
@@ -48,7 +47,7 @@ const InitialState = {
     newMessageText: '',
 }
 
-export const dialogsPageReducer = (state: DialogsPageType = InitialState, action: ActionsTypes): DialogsPageType => {
+export const dialogsPageReducer = (state: DialogsPageType = InitialState, action: DialogsActionsTypes): DialogsPageType => {
     switch (action.type) {
         case ADD_MESSAGE:
             return {

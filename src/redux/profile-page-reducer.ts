@@ -5,7 +5,6 @@ const ADD_NEW_POST_TEXT = 'ADD-NEW-POST-TEXT'
 const GET_PROFILE = 'GET-PROFILE'
 
 
-
 export type ProfilePageType = {
     postsTexts: postType[]
     newPostText: string
@@ -52,12 +51,12 @@ const InitialState: ProfilePageType = {
     newPostText: '',
 }
 
-type ActionsTypes =
+export type ProfileActionsTypes =
     ReturnType<typeof addPost> |
     ReturnType<typeof addNewPostText> |
-    ReturnType<typeof  getProfile>
+    ReturnType<typeof getProfile>
 
-export const profilePageReducer = (state: ProfilePageType = InitialState, action: ActionsTypes) => {
+export const profilePageReducer = (state: ProfilePageType = InitialState, action: ProfileActionsTypes) => {
     switch (action.type) {
         case ADD_POST :
             const newPost: postType = {
@@ -92,9 +91,9 @@ export const addNewPostText = (newPostText: string) => {
     } as const
 }
 
-export const getProfile = (profile: ProfileType ) => {
+export const getProfile = (profile: ProfileType) => {
     return {
         type: GET_PROFILE,
         profile
-    }as const
+    } as const
 }

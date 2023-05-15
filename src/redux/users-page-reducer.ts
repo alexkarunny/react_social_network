@@ -1,4 +1,6 @@
 import avatar from '../src/images/avatar.png'
+import {usersApi} from '../api/api';
+import {AppThunk} from './redux-store';
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -43,20 +45,22 @@ const initialState: InitialStateType = {
     disabledUsers: []
 }
 
-type ActionsTypes =
-    ReturnType<typeof followUser> |
-    ReturnType<typeof unFollowUser> |
-    ReturnType<typeof getUsers> |
+export type UsersActionsTypes =
+    ReturnType<typeof followUserAC> |
+    ReturnType<typeof unFollowUserAC> |
+    ReturnType<typeof getUsersAC> |
     ReturnType<typeof setTotalUsersNumber> |
-    ReturnType<typeof changeCurrentPage> |
+    ReturnType<typeof changeCurrentPageAC> |
     ReturnType<typeof toggleLoadingImg> |
     ReturnType<typeof toggleFollowButton>
 
-export const usersPageReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
+export const usersPageReducer = (state: InitialStateType = initialState, action: UsersActionsTypes): InitialStateType => {
     switch (action.type) {
         case FOLLOW:
+            debugger
             return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)}
         case UNFOLLOW:
+            debugger
             return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)}
         case GET_USERS:
             return {...state, users: [...action.users]}
@@ -79,7 +83,6 @@ export const usersPageReducer = (state: InitialStateType = initialState, action:
 
             return {
                 ...state,
-                isFollowing: action.isFollowing,
                 disabledUsers: action.isFollowing
                     ? [...state.disabledUsers, action.userId]
                     : state.disabledUsers.filter(u => u !== action.userId)
@@ -89,21 +92,21 @@ export const usersPageReducer = (state: InitialStateType = initialState, action:
     }
 }
 
-export const followUser = (userId: number) => {
+export const followUserAC = (userId: number) => {
     return {
         type: FOLLOW,
         userId
     } as const
 }
 
-export const unFollowUser = (userId: number) => {
+export const unFollowUserAC = (userId: number) => {
     return {
         type: UNFOLLOW,
         userId
     } as const
 }
 
-export const getUsers = (users: UserType[]) => {
+export const getUsersAC = (users: UserType[]) => {
     return {
         type: GET_USERS,
         users
@@ -117,7 +120,7 @@ export const setTotalUsersNumber = (totalUsersNumber: number) => {
     } as const
 }
 
-export const changeCurrentPage = (currentPage: number) => {
+export const changeCurrentPageAC = (currentPage: number) => {
     return {
         type: CHANGE_CURRENT_PAGE,
         currentPage
@@ -138,5 +141,49 @@ export const toggleFollowButton = (isFollowing: boolean, userId: number) => {
         userId
     } as const
 }
+
+export const getUsers = (pageSize: number, currentPage: number): AppThunk => (dispatch) => {
+    dispatch(toggleLoadingImg(true))
+    usersApi.getUsers(pageSize, currentPage).then(data => {
+        dispatch(getUsersAC(data.items))
+        dispatch(setTotalUsersNumber(data.totalCount))
+        dispatch(toggleLoadingImg(false))
+    })
+}
+
+export const changeCurrentPage = (page: number, pageSize: number): AppThunk => (dispatch) => {
+    dispatch(toggleLoadingImg(true))
+    dispatch(changeCurrentPageAC(page))
+    usersApi.getUsers(pageSize, page)
+        .then(data => {
+            dispatch(getUsersAC(data.items))
+            dispatch(toggleLoadingImg(false))
+        })
+}
+
+export const followUser = (userId: number, isFollowed: boolean): AppThunk => (dispatch) => {
+    dispatch(toggleFollowButton(true, userId))
+
+    if (isFollowed) {
+        usersApi.unFollowUser(userId).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(unFollowUserAC(userId))
+            }
+            dispatch(toggleFollowButton(false, userId))
+        })
+    } else {
+        usersApi.followUser(userId).then(data => {
+            debugger
+            if (data.resultCode === 0) {
+                dispatch(followUserAC(userId))
+            }
+            dispatch(toggleFollowButton(false, userId))
+        })
+    }
+}
+
+
+
+
 
 
