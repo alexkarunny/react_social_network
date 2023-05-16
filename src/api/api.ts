@@ -15,10 +15,10 @@ type FollowResponseType = {
     data: {}
 }
 
-export type AuthResponseType = {
+export type AuthResponseType<T> = {
     resultCode: number
     messages: []
-    data: AuthDataType
+    data: T
 }
 
 const instance = axios.create({
@@ -39,7 +39,10 @@ export const usersApi = {
     unFollowUser(userId: number) {
         return instance.delete<FollowResponseType>(`follow/${userId}`).then(res => res.data)
     },
-    auth() {
-        return instance.get<AuthResponseType>(`/auth/me`).then(res => res.data)
-    }
+}
+
+export const authApi = {
+    me() {
+        return instance.get<AuthResponseType<AuthDataType>>(`/auth/me`).then(res => res.data)
+    },
 }

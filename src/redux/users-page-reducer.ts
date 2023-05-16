@@ -144,11 +144,12 @@ export const toggleFollowButton = (isFollowing: boolean, userId: number) => {
 
 export const getUsers = (pageSize: number, currentPage: number): AppThunk => (dispatch) => {
     dispatch(toggleLoadingImg(true))
-    usersApi.getUsers(pageSize, currentPage).then(data => {
-        dispatch(getUsersAC(data.items))
-        dispatch(setTotalUsersNumber(data.totalCount))
-        dispatch(toggleLoadingImg(false))
-    })
+    usersApi.getUsers(pageSize, currentPage)
+        .then(data => {
+            dispatch(getUsersAC(data.items))
+            dispatch(setTotalUsersNumber(data.totalCount))
+            dispatch(toggleLoadingImg(false))
+        })
 }
 
 export const changeCurrentPage = (page: number, pageSize: number): AppThunk => (dispatch) => {
@@ -165,20 +166,22 @@ export const followUser = (userId: number, isFollowed: boolean): AppThunk => (di
     dispatch(toggleFollowButton(true, userId))
 
     if (isFollowed) {
-        usersApi.unFollowUser(userId).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(unFollowUserAC(userId))
-            }
-            dispatch(toggleFollowButton(false, userId))
-        })
+        usersApi.unFollowUser(userId)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(unFollowUserAC(userId))
+                }
+                dispatch(toggleFollowButton(false, userId))
+            })
     } else {
-        usersApi.followUser(userId).then(data => {
-            debugger
-            if (data.resultCode === 0) {
-                dispatch(followUserAC(userId))
-            }
-            dispatch(toggleFollowButton(false, userId))
-        })
+        usersApi.followUser(userId)
+            .then(data => {
+                debugger
+                if (data.resultCode === 0) {
+                    dispatch(followUserAC(userId))
+                }
+                dispatch(toggleFollowButton(false, userId))
+            })
     }
 }
 

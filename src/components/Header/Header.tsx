@@ -15,7 +15,7 @@ export const Header = (props: HeaderPropsType) => {
 
             {
                 isAuth
-                    ?<div className={classes.userDataBlock}>
+                    ? <div className={classes.userDataBlock}>
                         <span>{login}</span>
                         <span>{email}</span>
                     </div>
