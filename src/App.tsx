@@ -9,12 +9,13 @@ import {DialogsContainer} from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainerWithRouter from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import {Login} from './components/Login/Login';
 
 function App() {
     return (
         <BrowserRouter>
             <div className={classes.app}>
-                <HeaderContainer />
+                <HeaderContainer/>
                 <NavBar title={'Menu'}/>
                 <div className={classes.app_content}>
                     <Route path={'/profile/:userId?'} render={() => <ProfileContainerWithRouter title={'My Profile'}
@@ -26,6 +27,7 @@ function App() {
                     <Route path={'/users'} render={() => <UsersContainer title={'Users'}/>}></Route>
                     <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
                     <Route path={'/settings'} render={() => <Settings title={'My Settings'}/>}></Route>
+                    <Route path={'/login'} render={() => <Login/>}></Route>
                 </div>
             </div>
         </BrowserRouter>

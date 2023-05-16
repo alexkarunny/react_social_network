@@ -42,11 +42,11 @@ export const setUserDataAC = (data: AuthDataType) => {
     } as const
 }
 
-export const setUserData = ():AppThunk => (dispatch) => {
+export const setUserData = (): AppThunk => (dispatch) => {
     authApi.me()
         .then(data => {
-        if (data.resultCode === 0) {
-           dispatch(setUserDataAC(data.data))
-        }
-    })
+            if (data.resultCode === 0) {
+                dispatch(setUserDataAC(data.data))
+            }
+        })
 }
