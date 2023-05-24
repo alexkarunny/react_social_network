@@ -18,10 +18,9 @@ function App() {
                 <HeaderContainer/>
                 <NavBar title={'Menu'}/>
                 <div className={classes.app_content}>
-                    <Route path={'/profile/:userId?'} render={() => <ProfileContainerWithRouter title={'My Profile'}
-                    />}></Route>
+                    <Route path={'/profile/:userId?'} render={() => <ProfileContainerWithRouter/>}></Route>
                     <Route path={'/dialogs'}
-                           render={() => <DialogsContainer title={'My dialogs'}
+                           render={() => <DialogsContainer
                            />}></Route>
                     <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
                     <Route path={'/users'} render={() => <UsersContainer title={'Users'}/>}></Route>

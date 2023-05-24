@@ -3,13 +3,13 @@ import {AddMessageAC, AddNewMessageTextAC} from '../../redux/dialogs-page-reduce
 import {connect} from 'react-redux';
 import {AllActionsType, RootStateType} from '../../redux/redux-store';
 import {Dispatch} from 'redux';
+import {WithAuthRedirect} from '../../hoc/WithAuthRedirect';
 
 const mapStateToProps = (state: RootStateType) => {
     return {
         newMessageText: state.dialogsPage.newMessageText,
         dialogsNames: state.dialogsPage.dialogsNames,
         messagesTexts: state.dialogsPage.messagesTexts,
-        isAuth: state.auth.isAuth,
     }
 }
 
@@ -24,4 +24,4 @@ const mapDispatchToProps = (dispatch: Dispatch<AllActionsType>) => {
     }
 }
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
+export const DialogsContainer = WithAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(Dialogs))

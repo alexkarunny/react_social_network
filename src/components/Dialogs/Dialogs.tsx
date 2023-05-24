@@ -3,16 +3,13 @@ import {Dialog} from './Dialog/Dialog';
 import {Message} from './Message/Message';
 import {ChangeEvent} from 'react';
 import {dialogNameType, messageTextType} from '../../redux/dialogs-page-reducer';
-import {Redirect} from 'react-router-dom';
 
 type DialogsPropsType = {
-    title: string
     newMessageText: string
     dialogsNames: dialogNameType[]
     messagesTexts: messageTextType[]
     onChangeAddNewMessageText: (title: string) => void
     onClickAddNewMessage: () => void
-    isAuth: boolean
 }
 
 export const Dialogs = (props: DialogsPropsType) => {
@@ -23,10 +20,9 @@ export const Dialogs = (props: DialogsPropsType) => {
     const onClickAddNewMessage = () => {
         props.onClickAddNewMessage()
     }
-    if (!props.isAuth) return <Redirect to={'/login'}/>
     return (
         <div className={classes.dialogs}>
-            <h2 className={classes.title}>{props.title}</h2>
+            <h2 className={classes.title}>Dialogs</h2>
             <div className={classes.dialogs_items}>
                 {props.dialogsNames.map((d, i) => <Dialog
                     key={d.id + i}
