@@ -2,7 +2,7 @@ import classes from './Dialogs.module.css'
 import {Dialog} from './Dialog/Dialog';
 import {Message} from './Message/Message';
 import {ChangeEvent} from 'react';
-import {dialogNameType, messageTextType} from '../../redux/dialogs-page-reducer';
+import {dialogNameType, messageTextType} from 'redux/dialogs-page-reducer';
 
 type DialogsPropsType = {
     newMessageText: string

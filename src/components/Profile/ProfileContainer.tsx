@@ -1,11 +1,12 @@
 import React from 'react';
 import {Profile} from './Profile';
 import {connect} from 'react-redux';
-import {RootStateType} from '../../redux/redux-store';
-import {getProfile, ProfileType} from '../../redux/profile-page-reducer';
+import {RootStateType} from 'redux/redux-store';
+import {getProfile, ProfileType} from 'redux/profile-page-reducer';
 import axios from 'axios';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {WithAuthRedirect} from '../../hoc/WithAuthRedirect';
+import {WithAuthRedirect} from 'hoc/WithAuthRedirect';
+import {compose} from 'redux';
 
 type PathParamsType = {
     userId: string
@@ -44,7 +45,9 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 }
 
-const ProfileContainerWithRouter = withRouter(ProfileContainer)
-
-export default WithAuthRedirect(connect(mapStateToProps, {getProfile})(ProfileContainerWithRouter))
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, {getProfile}),
+    WithAuthRedirect,
+    withRouter
+)(ProfileContainer)
 

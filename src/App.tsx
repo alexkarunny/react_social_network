@@ -1,15 +1,16 @@
 import React from 'react';
 import classes from './App.module.css';
-import {NavBar} from './components/Navbar/NavBar';
+import {NavBar} from 'components/Navbar/NavBar';
 import {BrowserRouter, Route} from 'react-router-dom';
-import {Friends} from './components/Friends/Friends';
-import {Video} from './components/Video/Video';
-import {Settings} from './components/Settings/Settings';
-import {DialogsContainer} from './components/Dialogs/DialogsContainer';
+import {Friends} from 'components/Friends/Friends';
+import {Video} from 'components/Video/Video';
+import {Settings} from 'components/Settings/Settings';
 import UsersContainer from './components/Users/UsersContainer';
-import ProfileContainerWithRouter from './components/Profile/ProfileContainer';
+import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import {Login} from './components/Login/Login';
+import {Login} from 'components/Login/Login';
+import Dialogs from 'components/Dialogs/DialogsContainer';
+
 
 function App() {
     return (
@@ -18,9 +19,9 @@ function App() {
                 <HeaderContainer/>
                 <NavBar title={'Menu'}/>
                 <div className={classes.app_content}>
-                    <Route path={'/profile/:userId?'} render={() => <ProfileContainerWithRouter/>}></Route>
+                    <Route path={'/profile/:userId?'} render={() => <ProfileContainer/>}></Route>
                     <Route path={'/dialogs'}
-                           render={() => <DialogsContainer
+                           render={() => <Dialogs
                            />}></Route>
                     <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
                     <Route path={'/users'} render={() => <UsersContainer title={'Users'}/>}></Route>
