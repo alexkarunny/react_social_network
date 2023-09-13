@@ -1,7 +1,7 @@
 import classes from './ProfileInfo.module.css'
 import bg from '../../../src/images/bg.jpg';
 import React from 'react';
-import {ProfileType} from '../../../redux/profile-page-reducer';
+import {ProfileType} from 'redux/profile-page-reducer';
 
 type ProfileInfoPropsType = {
     profile?: ProfileType

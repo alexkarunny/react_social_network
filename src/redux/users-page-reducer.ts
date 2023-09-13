@@ -1,5 +1,5 @@
 import avatar from '../src/images/avatar.png'
-import {usersApi} from '../api/api';
+import {usersApi} from 'api/api';
 import {AppThunk} from './redux-store';
 
 const FOLLOW = 'FOLLOW'

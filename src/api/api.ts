@@ -1,6 +1,7 @@
 import axios from 'axios';
-import {UserType} from '../redux/users-page-reducer';
-import {AuthDataType} from '../redux/auth-reducer';
+import {UserType} from 'redux/users-page-reducer';
+import {AuthDataType} from 'redux/auth-reducer';
+import {ProfileType} from 'redux/profile-page-reducer';
 
 
 type GetResponseType = {
@@ -45,4 +46,16 @@ export const authApi = {
     me() {
         return instance.get<AuthResponseType<AuthDataType>>(`/auth/me`).then(res => res.data)
     },
+}
+
+export const profileApi = {
+    getUserProfile(userId: string) {
+        return instance.get<ProfileType>(`profile/${userId}`).then(res => res.data)
+    },
+    getUserStatus(userId: string) {
+        return instance.get<string>(`profile/status/${userId}`).then(res => res.data)
+    },
+    updateUserStatus(status: string) {
+        return instance.put<FollowResponseType>(`profile/status`, {status}).then(res => res.data)
+    }
 }
