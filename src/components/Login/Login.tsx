@@ -2,13 +2,13 @@ import React from 'react';
 import {Field, InjectedFormProps, reduxForm} from 'redux-form';
 
 export const Login = () => {
-    const onSubmit = (formData: FormDataType) => {
+    const onSubmitHandler = (formData: FormDataType) => {
         console.log(formData)
     }
     return (
         <div>
             <h2>Login</h2>
-            <LoginReduxForm onSubmit={onSubmit}/>
+            <LoginReduxForm onSubmit={onSubmitHandler}/>
         </div>
     );
 };

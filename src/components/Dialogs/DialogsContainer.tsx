@@ -1,30 +1,23 @@
 import {Dialogs} from './Dialogs';
-import {AddMessageAC, AddNewMessageTextAC} from 'redux/dialogs-page-reducer';
 import {connect} from 'react-redux';
-import {AllActionsType, RootStateType} from 'redux/redux-store';
-import {compose, Dispatch} from 'redux';
+import {RootStateType} from 'redux/redux-store';
+import {compose} from 'redux';
 import {WithAuthRedirect} from 'hoc/WithAuthRedirect';
+import React from 'react';
+import {addMessage} from 'redux/dialogs-page-reducer';
 
 const mapStateToProps = (state: RootStateType) => {
     return {
-        newMessageText: state.dialogsPage.newMessageText,
         dialogsNames: state.dialogsPage.dialogsNames,
         messagesTexts: state.dialogsPage.messagesTexts,
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<AllActionsType>) => {
-    return {
-        onChangeAddNewMessageText: (title: string) => {
-            dispatch(AddNewMessageTextAC(title))
-        },
-        onClickAddNewMessage: () => {
-            dispatch(AddMessageAC())
-        }
-    }
+export type mapDispatchToPropsTypeDialogs = {
+    addMessage: (message: string) => void
 }
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps, {addMessage}),
     WithAuthRedirect
 )(Dialogs)

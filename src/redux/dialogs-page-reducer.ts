@@ -1,35 +1,6 @@
+import {AppThunk} from 'redux/redux-store';
+
 const ADD_MESSAGE = 'ADD-MESSAGE'
-const ADD_NEW_MESSAGE_TEXT = 'ADD-NEW-MESSAGE-TEXT'
-
-export type DialogsPageType = {
-    dialogsNames: dialogNameType[]
-    messagesTexts: messageTextType[]
-    newMessageText: string
-}
-export type dialogNameType = {
-    id: number
-    dialogName: string
-}
-export type messageTextType = {
-    messageText: string
-}
-
-export const AddMessageAC = () => {
-    return {
-        type: ADD_MESSAGE
-    } as const
-}
-
-export const AddNewMessageTextAC = (newMessageText: string) => {
-    return {
-        type: ADD_NEW_MESSAGE_TEXT,
-        newMessageText: newMessageText
-    } as const
-}
-
-export type DialogsActionsTypes =
-    ReturnType<typeof AddNewMessageTextAC> |
-    ReturnType<typeof AddMessageAC>
 
 const InitialState = {
     dialogsNames: [
@@ -44,7 +15,6 @@ const InitialState = {
         {messageText: 'How are You?'},
         {messageText: 'At the same time'},
     ],
-    newMessageText: '',
 }
 
 export const dialogsPageReducer = (state: DialogsPageType = InitialState, action: DialogsActionsTypes): DialogsPageType => {
@@ -52,13 +22,38 @@ export const dialogsPageReducer = (state: DialogsPageType = InitialState, action
         case ADD_MESSAGE:
             return {
                 ...state,
-                messagesTexts: [...state.messagesTexts, {messageText: state.newMessageText}],
-                newMessageText: ''
+                messagesTexts: [...state.messagesTexts, {messageText: action.message}]
             }
-        case ADD_NEW_MESSAGE_TEXT:
-            state.newMessageText = action.newMessageText
-            return {...state, newMessageText: action.newMessageText}
         default:
             return state
     }
 }
+
+//ac
+const AddMessageAC = (message: string) => {
+    return {
+        type: ADD_MESSAGE,
+        message
+    } as const
+}
+
+//thunk
+export const addMessage = (message: string): AppThunk => (dispatch) => {
+    dispatch(AddMessageAC(message))
+}
+
+//types
+export type DialogsPageType = {
+    dialogsNames: dialogNameType[]
+    messagesTexts: messageTextType[]
+}
+export type dialogNameType = {
+    id: number
+    dialogName: string
+}
+export type messageTextType = {
+    messageText: string
+}
+
+export type DialogsActionsTypes =
+    ReturnType<typeof AddMessageAC>

@@ -1,24 +1,20 @@
 import classes from './Dialogs.module.css'
 import {Dialog} from './Dialog/Dialog';
 import {Message} from './Message/Message';
-import {ChangeEvent} from 'react';
+import React from 'react';
 import {dialogNameType, messageTextType} from 'redux/dialogs-page-reducer';
+import {Field, InjectedFormProps, reduxForm} from 'redux-form';
+import {mapDispatchToPropsTypeDialogs} from 'components/Dialogs/DialogsContainer';
 
 type DialogsPropsType = {
-    newMessageText: string
     dialogsNames: dialogNameType[]
     messagesTexts: messageTextType[]
-    onChangeAddNewMessageText: (title: string) => void
-    onClickAddNewMessage: () => void
-}
+} & mapDispatchToPropsTypeDialogs
 
 export const Dialogs = (props: DialogsPropsType) => {
-    const onChangeAddNewMessageText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onChangeAddNewMessageText(e.currentTarget.value)
-    }
 
-    const onClickAddNewMessage = () => {
-        props.onClickAddNewMessage()
+    const onSubmitHandler = (formData: FormDataType) => {
+        props.addMessage(formData.textarea)
     }
     return (
         <div className={classes.dialogs}>
@@ -31,9 +27,26 @@ export const Dialogs = (props: DialogsPropsType) => {
             </div>
             <div className={classes.messages_items}>
                 {props.messagesTexts.map((m, i) => <Message key={i} messageText={m.messageText}/>)}
-                <textarea value={props.newMessageText} onChange={onChangeAddNewMessageText}/>
-                <button onClick={onClickAddNewMessage}>Add</button>
+                <AddMessageReduxForm onSubmit={onSubmitHandler} />
             </div>
         </div>
     )
+}
+
+const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <Field placeholder={'Add message'} component={'textarea'} name={'textarea'} />
+            <button>Add</button>
+        </form>
+    )
+}
+
+const AddMessageReduxForm = reduxForm<FormDataType>({
+    form: 'addMessage'
+})(AddMessageForm)
+
+//types
+type FormDataType = {
+    textarea: string
 }
