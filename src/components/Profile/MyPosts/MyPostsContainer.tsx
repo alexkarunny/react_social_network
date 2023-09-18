@@ -1,35 +1,25 @@
-import {addNewPostText, addPost, postType} from '../../../redux/profile-page-reducer';
+import {addPost, postType} from 'redux/profile-page-reducer';
 import {MyPosts} from './MyPosts';
 import {connect} from 'react-redux';
-import {RootStateType} from '../../../redux/redux-store';
-import {Dispatch} from 'redux';
+import {RootStateType} from 'redux/redux-store';
+import React from 'react';
+import {compose} from 'redux';
 
 type mapStatePropsType = {
     posts: postType[]
-    newPostText: string
 }
 
-type mapDispatchPropsType= {
-    onChangeAddTextHandler: (title: string) => void
-    onClickAddPostHandler: () => void
+export type mapDispatchPropsTypePosts= {
+    addPost: (post: string) => void
 }
 
 const mapStateToProps = (state: RootStateType): mapStatePropsType => {
     return {
         posts: state.profilePage.postsTexts,
-        newPostText: state.profilePage.newPostText
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch):mapDispatchPropsType  => {
-    return {
-        onChangeAddTextHandler: (title) => {
-            dispatch(addNewPostText(title))
-        },
-        onClickAddPostHandler: () => {
-            dispatch(addPost())
-        }
-    }
-}
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, {addPost})
+)(MyPosts)
 
-export const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)

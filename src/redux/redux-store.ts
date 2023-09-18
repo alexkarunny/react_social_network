@@ -22,6 +22,5 @@ export type AllActionsType = UsersActionsTypes | DialogsActionsTypes | ProfileAc
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, AllActionsType>
 
-
 // @ts-ignore
 window.store = store
