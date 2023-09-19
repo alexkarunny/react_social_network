@@ -4,11 +4,17 @@ import {Post} from './Post/Post';
 import { postType} from 'redux/profile-page-reducer';
 import {Field, InjectedFormProps, reduxForm} from 'redux-form';
 import {mapDispatchPropsTypePosts} from 'components/Profile/MyPosts/MyPostsContainer';
+import {maxLength, required} from 'utils/validators/validators';
+import {Textarea} from 'components/Common/formControls/Textarea/FormControls';
+
+
 
 
 type MyPostsPropsType = {
     posts: postType[]
 } & mapDispatchPropsTypePosts
+
+const maxLength20 = maxLength(20)
 
 export const MyPosts = (props: MyPostsPropsType) => {
 
@@ -36,7 +42,7 @@ const PostsForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field component={'textarea'} placeholder={'Write post'} name={'textarea'}/>
+                <Field component={Textarea} placeholder={'Write post'} name={'textarea'} validate={[required, maxLength20]}/>
             </div>
             <div>
                 <button>Add post</button>

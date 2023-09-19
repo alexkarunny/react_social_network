@@ -5,6 +5,8 @@ import React from 'react';
 import {dialogNameType, messageTextType} from 'redux/dialogs-page-reducer';
 import {Field, InjectedFormProps, reduxForm} from 'redux-form';
 import {mapDispatchToPropsTypeDialogs} from 'components/Dialogs/DialogsContainer';
+import {maxLength, required} from 'utils/validators/validators';
+import {Textarea} from 'components/Common/formControls/Textarea/FormControls';
 
 type DialogsPropsType = {
     dialogsNames: dialogNameType[]
@@ -33,10 +35,12 @@ export const Dialogs = (props: DialogsPropsType) => {
     )
 }
 
+
+const maxLength100 = maxLength(100)
 const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
-            <Field placeholder={'Add message'} component={'textarea'} name={'textarea'} />
+            <Field placeholder={'Add message'} component={Textarea} name={'textarea'} validate={[required, maxLength100]} />
             <button>Add</button>
         </form>
     )
