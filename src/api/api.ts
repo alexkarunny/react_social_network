@@ -16,7 +16,7 @@ type FollowResponseType = {
     data: {}
 }
 
-export type AuthResponseType<T> = {
+export type AuthResponseType<T = {}> = {
     resultCode: number
     messages: []
     data: T
@@ -46,6 +46,13 @@ export const authApi = {
     me() {
         return instance.get<AuthResponseType<AuthDataType>>(`/auth/me`).then(res => res.data)
     },
+    login(email: string, password: string, rememberMe: boolean = false) {
+        return instance.post<AuthResponseType<{userId: number}>>(`/auth/login`, {email, password, rememberMe}).then(res => res.data)
+    },
+    logout() {
+        return instance.delete<AuthResponseType>(`/auth/login`).then(res => res.data)
+    }
+
 }
 
 export const profileApi = {
