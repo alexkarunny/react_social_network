@@ -32,7 +32,7 @@ const setUserDataAC = (email: string | null, id: number | null, login: string | 
 
 //thunk
 export const setUserData = (): AppThunk => (dispatch) => {
-    authApi.me()
+   return authApi.me()
         .then(data => {
             if (data.resultCode === 0) {
                 const {id, login, email} = data.data

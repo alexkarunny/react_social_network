@@ -37,9 +37,14 @@ const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 
 class ProfileContainer extends React.Component<PropsType> {
     componentDidMount() {
-        let userId = this.props.match.params.userId || this.props.userId?.toString() || ''
-        this.props.setProfile(userId)
-        this.props.setUserStatus(userId)
+        let userId = this.props.match.params.userId || this.props.userId?.toString()
+        if (userId) {
+            this.props.setProfile(userId)
+            this.props.setUserStatus(userId)
+        } else {
+            this.props.history.push('/login')
+        }
+
     }
 
     componentWillUnmount() {
