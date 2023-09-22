@@ -1,5 +1,6 @@
 import {AppThunk} from './redux-store';
 import {authApi} from 'api/api';
+import {stopSubmit} from 'redux-form';
 
 const SET_USER_DATA = 'SET-USER-DATA'
 
@@ -41,19 +42,24 @@ export const setUserData = (): AppThunk => (dispatch) => {
 }
 export const login = (email: string, password: string, rememberMe: boolean): AppThunk => (dispatch) => {
     authApi.login(email, password, rememberMe).then(data => {
-        if(data.resultCode === 0) {
+        if (data.resultCode === 0) {
             dispatch(setUserData())
+        } else {
+            const message = data.messages.length > 0
+                ? data.messages[0]
+                : 'Some error'
+            // @ts-ignore
+            dispatch(stopSubmit('contact', {_error: message}))
         }
     })
 }
-export const logout = ():AppThunk => (dispatch) => {
+export const logout = (): AppThunk => (dispatch) => {
     authApi.logout().then(data => {
-        if(data.resultCode === 0) {
+        if (data.resultCode === 0) {
             dispatch(setUserDataAC(null, null, null, false))
         }
     })
 }
-
 
 //types
 export type AuthDataType = {

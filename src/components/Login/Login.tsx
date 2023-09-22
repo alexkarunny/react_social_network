@@ -42,6 +42,9 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
             <div>
                 <Field component={'input'} type={'checkbox'} name={'rememberMe'}/> remember me
             </div>
+            {
+                props.error && <div style={{'border': '1px solid red', 'width': '300px'}}>{props.error}</div>
+            }
             <div>
                 <button>Login</button>
             </div>

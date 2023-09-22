@@ -18,7 +18,7 @@ type FollowResponseType = {
 
 export type AuthResponseType<T = {}> = {
     resultCode: number
-    messages: []
+    messages: string[]
     data: T
 }
 
