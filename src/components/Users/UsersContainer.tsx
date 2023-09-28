@@ -1,9 +1,16 @@
 import {connect} from 'react-redux';
 import {Users} from './Users';
-import {RootStateType} from '../../redux/redux-store';
-import {changeCurrentPage, followUser, getUsers, UserType} from '../../redux/users-page-reducer';
+import {RootStateType} from 'redux/redux-store';
+import {changeCurrentPage, followUser, getUsers, UserType} from 'redux/users-page-reducer';
 import React from 'react';
 import {Preloader} from '../Common/Preloader/Preloader';
+import {
+    currentPageSelector, disabledUsersSelector,
+    isLoadingSelector,
+    pageSizeSelector,
+    totalUsersSelector,
+    usersSelector
+} from 'redux/user-selectors';
 
 type OwnPropsType = {
     title: string
@@ -52,7 +59,7 @@ class UsersContainer extends React.Component<UsersContainerPropsType> {
     }
 }
 
-export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
+/*export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
     return {
         users: state.usersPage.users,
         currentPage: state.usersPage.currentPage,
@@ -60,6 +67,16 @@ export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
         totalUsersNumber: state.usersPage.totalUsersNumber,
         isLoading: state.usersPage.isLoading,
         disabledUsers: state.usersPage.disabledUsers
+    }
+}*/
+export const mapStateToProps = (state: RootStateType): MapStatePropsType => {
+    return {
+        users: usersSelector(state),
+        currentPage: currentPageSelector(state),
+        pageSize: pageSizeSelector(state),
+        totalUsersNumber: totalUsersSelector(state),
+        isLoading: isLoadingSelector(state),
+        disabledUsers: disabledUsersSelector(state)
     }
 }
 
