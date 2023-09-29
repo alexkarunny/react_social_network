@@ -8,8 +8,7 @@ import {
     currentPageSelector, disabledUsersSelector,
     isLoadingSelector,
     pageSizeSelector,
-    totalUsersSelector,
-    usersSelector
+    totalUsersSelector, usersSelector,
 } from 'redux/user-selectors';
 
 type OwnPropsType = {
