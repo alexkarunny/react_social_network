@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 
 type Props = {
     status: string
@@ -6,13 +6,18 @@ type Props = {
 }
 
 export const ProfileStatusWithHooks: React.FC<Props> = ({status, updateStatus}) => {
+
     const [editMode, setEditMode] = useState(false)
     const [newStatus, setStatus] = useState(status)
+    debugger
     const activateEditMode = () => setEditMode(true)
     const deactivateEditMode = () => {
         setEditMode(false)
         updateStatus(newStatus)
     }
+    useEffect(() => {
+        setStatus(status)
+    }, [status])
     const changeStatusHandler = (e:ChangeEvent<HTMLInputElement> ) => setStatus(e.currentTarget.value)
 
     return (
