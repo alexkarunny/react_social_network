@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import classes from './MyPosts.module.css'
 import {Post} from './Post/Post';
 import { postType} from 'redux/profile-page-reducer';
@@ -16,7 +16,7 @@ type MyPostsPropsType = {
 
 const maxLength20 = maxLength(20)
 
-export const MyPosts = (props: MyPostsPropsType) => {
+export const MyPosts = memo((props: MyPostsPropsType) => {
 
     const onSubmitHandler = (formData: FormDataType) => {
         console.log(formData)
@@ -36,7 +36,7 @@ export const MyPosts = (props: MyPostsPropsType) => {
             </div>
         </div>
     )
-}
+})
 
 const PostsForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     return (

@@ -9,7 +9,6 @@ export const ProfileStatusWithHooks: React.FC<Props> = ({status, updateStatus}) 
 
     const [editMode, setEditMode] = useState(false)
     const [newStatus, setStatus] = useState(status)
-    debugger
     const activateEditMode = () => setEditMode(true)
     const deactivateEditMode = () => {
         setEditMode(false)
