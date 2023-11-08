@@ -1,6 +1,6 @@
 import {AppThunk} from 'redux/redux-store';
 
-const ADD_MESSAGE = 'ADD-MESSAGE'
+const ADD_MESSAGE = 'dialogs/ADD-MESSAGE'
 
 const InitialState = {
     dialogsNames: [

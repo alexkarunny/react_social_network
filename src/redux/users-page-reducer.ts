@@ -1,14 +1,16 @@
 import avatar from '../src/images/avatar.png'
 import {usersApi} from 'api/api';
 import {AppThunk} from './redux-store';
+import {Dispatch} from 'redux';
+import {updateObjectInArray} from 'utils/helpers/object-helpers';
 
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
-const GET_USERS = 'GET-USERS'
-const SET_TOTAL_USERS_NUMBER = 'SET-TOTAL-USERS-NUMBER'
-const CHANGE_CURRENT_PAGE = 'CHANGE-CURRENT-PAGE'
-const TOGGLE_LOADING_IMG = 'TOGGLE-LOADING-IMG'
-const TOGGLE_FOLLOW_BUTTON = 'TOGGLE-FOLLOW-BUTTON'
+const FOLLOW = 'users/FOLLOW'
+const UNFOLLOW = 'users/UNFOLLOW'
+const GET_USERS = 'users/GET-USERS'
+const SET_TOTAL_USERS_NUMBER = 'users/SET-TOTAL-USERS-NUMBER'
+const CHANGE_CURRENT_PAGE = 'users/CHANGE-CURRENT-PAGE'
+const TOGGLE_LOADING_IMG = 'users/TOGGLE-LOADING-IMG'
+const TOGGLE_FOLLOW_BUTTON = 'users/TOGGLE-FOLLOW-BUTTON'
 
 export type UserType = {
     id: number
@@ -57,11 +59,9 @@ export type UsersActionsTypes =
 export const usersPageReducer = (state: InitialStateType = initialState, action: UsersActionsTypes): InitialStateType => {
     switch (action.type) {
         case FOLLOW:
-            debugger
-            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)}
+            return {...state, users: updateObjectInArray(state.users, action.userId,  {followed: true})}
         case UNFOLLOW:
-            debugger
-            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)}
+            return {...state, users: updateObjectInArray(state.users, action.userId,  {followed: false})}
         case GET_USERS:
             return {...state, users: [...action.users]}
         case SET_TOTAL_USERS_NUMBER:
@@ -74,13 +74,12 @@ export const usersPageReducer = (state: InitialStateType = initialState, action:
                 ...state,
                 currentPage: action.currentPage
             }
-        case 'TOGGLE-LOADING-IMG':
+        case TOGGLE_LOADING_IMG:
             return {
                 ...state,
                 isLoading: action.isLoading
             }
-        case 'TOGGLE-FOLLOW-BUTTON':
-
+        case TOGGLE_FOLLOW_BUTTON:
             return {
                 ...state,
                 disabledUsers: action.isFollowing
@@ -142,46 +141,38 @@ export const toggleFollowButton = (isFollowing: boolean, userId: number) => {
     } as const
 }
 
-export const getUsers = (pageSize: number, currentPage: number): AppThunk => (dispatch) => {
+export const getUsers = (pageSize: number, currentPage: number): AppThunk => async (dispatch) => {
     dispatch(toggleLoadingImg(true))
-    usersApi.getUsers(pageSize, currentPage)
-        .then(data => {
-            dispatch(getUsersAC(data.items))
-            dispatch(setTotalUsersNumber(data.totalCount))
-            dispatch(toggleLoadingImg(false))
-        })
+    const data = await usersApi.getUsers(pageSize, currentPage)
+    dispatch(getUsersAC(data.items))
+    dispatch(setTotalUsersNumber(data.totalCount))
+    dispatch(toggleLoadingImg(false))
+
 }
 
-export const changeCurrentPage = (page: number, pageSize: number): AppThunk => (dispatch) => {
+export const changeCurrentPage = (page: number, pageSize: number): AppThunk => async (dispatch) => {
     dispatch(toggleLoadingImg(true))
     dispatch(changeCurrentPageAC(page))
-    usersApi.getUsers(pageSize, page)
-        .then(data => {
-            dispatch(getUsersAC(data.items))
-            dispatch(toggleLoadingImg(false))
-        })
+    const data = await usersApi.getUsers(pageSize, page)
+    dispatch(getUsersAC(data.items))
+    dispatch(toggleLoadingImg(false))
 }
 
-export const followUser = (userId: number, isFollowed: boolean): AppThunk => (dispatch) => {
+const followUnfollowFlow = async (apiMethod: any, actionCreator: any, userId: number, dispatch: Dispatch ) => {
+    const data = await apiMethod(userId)
+    if (data.resultCode === 0) {
+        dispatch(actionCreator(userId))
+    }
+    dispatch(toggleFollowButton(false, userId))
+}
+
+export const followUser = (userId: number, isFollowed: boolean): AppThunk =>  (dispatch) => {
     dispatch(toggleFollowButton(true, userId))
 
     if (isFollowed) {
-        usersApi.unFollowUser(userId)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(unFollowUserAC(userId))
-                }
-                dispatch(toggleFollowButton(false, userId))
-            })
+        followUnfollowFlow(usersApi.unFollowUser, unFollowUserAC, userId, dispatch).then()
     } else {
-        usersApi.followUser(userId)
-            .then(data => {
-                debugger
-                if (data.resultCode === 0) {
-                    dispatch(followUserAC(userId))
-                }
-                dispatch(toggleFollowButton(false, userId))
-            })
+        followUnfollowFlow(usersApi.followUser, followUserAC, userId, dispatch).then()
     }
 }
 

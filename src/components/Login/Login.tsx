@@ -30,9 +30,9 @@ const Login: React.FC<Props> = ({login, isAuth}) => {
     );
 };
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <Field placeholder={'email'} component={Input} name={'email'} validate={[required]}/>
             </div>
@@ -43,7 +43,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
                 <Field component={'input'} type={'checkbox'} name={'rememberMe'}/> remember me
             </div>
             {
-                props.error && <div style={{'border': '1px solid red', 'width': '300px'}}>{props.error}</div>
+                error && <div style={{'border': '1px solid red', 'width': '300px'}}>{error}</div>
             }
             <div>
                 <button>Login</button>

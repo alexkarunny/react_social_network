@@ -2,7 +2,7 @@ import {AppThunk} from './redux-store';
 import {authApi} from 'api/api';
 import {stopSubmit} from 'redux-form';
 
-const SET_USER_DATA = 'SET-USER-DATA'
+const SET_USER_DATA = 'auth/SET-USER-DATA'
 
 const initialState: InitialStateType = {
     email: null,
@@ -12,7 +12,7 @@ const initialState: InitialStateType = {
 }
 export const authReducer = (state: InitialStateType = initialState, action: AuthActionTypes): InitialStateType => {
     switch (action.type) {
-        case 'SET-USER-DATA':
+        case SET_USER_DATA:
             return {
                 ...state,
                 ...action.payload
@@ -31,34 +31,31 @@ const setUserDataAC = (email: string | null, id: number | null, login: string | 
 }
 
 //thunk
-export const setUserData = (): AppThunk => (dispatch) => {
-   return authApi.me()
-        .then(data => {
-            if (data.resultCode === 0) {
-                const {id, login, email} = data.data
-                dispatch(setUserDataAC(email, id, login, true))
-            }
-        })
+export const setUserData = (): AppThunk => async (dispatch) => {
+    const data = await authApi.me()
+
+    if (data.resultCode === 0) {
+        const {id, login, email} = data.data
+        dispatch(setUserDataAC(email, id, login, true))
+    }
 }
-export const login = (email: string, password: string, rememberMe: boolean): AppThunk => (dispatch) => {
-    authApi.login(email, password, rememberMe).then(data => {
-        if (data.resultCode === 0) {
-            dispatch(setUserData())
-        } else {
-            const message = data.messages.length > 0
-                ? data.messages[0]
-                : 'Some error'
-            // @ts-ignore
-            dispatch(stopSubmit('contact', {_error: message}))
-        }
-    })
+export const login = (email: string, password: string, rememberMe: boolean): AppThunk => async (dispatch) => {
+    const data = await authApi.login(email, password, rememberMe)
+    if (data.resultCode === 0) {
+        dispatch(setUserData())
+    } else {
+        const message = data.messages.length > 0
+            ? data.messages[0]
+            : 'Some error'
+        // @ts-ignore
+        dispatch(stopSubmit('contact', {_error: message}))
+    }
 }
-export const logout = (): AppThunk => (dispatch) => {
-    authApi.logout().then(data => {
-        if (data.resultCode === 0) {
-            dispatch(setUserDataAC(null, null, null, false))
-        }
-    })
+export const logout = (): AppThunk => async (dispatch) => {
+    const data = await authApi.logout()
+    if (data.resultCode === 0) {
+        dispatch(setUserDataAC(null, null, null, false))
+    }
 }
 
 //types

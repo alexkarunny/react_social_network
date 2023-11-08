@@ -35,11 +35,13 @@ type UsersContainerPropsType = MapStatePropsType & MapDispatchPropsType & OwnPro
 class UsersContainer extends React.Component<UsersContainerPropsType> {
 
     componentDidMount() {
-        this.props.getUsers(this.props.pageSize, this.props.currentPage)
+        const {pageSize, currentPage} = this.props
+        this.props.getUsers(pageSize, currentPage)
     }
 
     changeCurrenPageCallback = (page: number) => {
-        this.props.changeCurrentPage(page, this.props.pageSize)
+        const {pageSize} = this.props
+        this.props.changeCurrentPage(page, pageSize)
     }
 
     render() {

@@ -15,7 +15,7 @@ beforeEach(() => {
 })
 
 test('new post should be added correctly', () => {
-    const action: ProfileActionsTypes = {type: 'ADD-POST', post: 'new post'}
+    const action: ProfileActionsTypes = {type: 'profile/ADD-POST', post: 'new post'}
 
     const newState = profilePageReducer(InitialState, action)
 
@@ -26,7 +26,7 @@ test('new post should be added correctly', () => {
 
 test('correct post should be removed', () => {
     const postId = InitialState.postsTexts[0].id
-    const action: ProfileActionsTypes = {type: 'REMOVE-POST', id: postId}
+    const action: ProfileActionsTypes = {type: 'profile/REMOVE-POST', id: postId}
     const newState = profilePageReducer(InitialState, action)
 
     expect(newState.postsTexts.length).toBe(2)
@@ -35,7 +35,7 @@ test('correct post should be removed', () => {
 })
 
 test('incorrect id shouldn\'t remove any post', () => {
-    const action: ProfileActionsTypes = {type: 'REMOVE-POST', id: 'incorrect-id'}
+    const action: ProfileActionsTypes = {type: 'profile/REMOVE-POST', id: 'incorrect-id'}
     const newState = profilePageReducer(InitialState, action)
     expect(newState.postsTexts.length).toBe(3)
 })

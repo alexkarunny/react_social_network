@@ -24,6 +24,7 @@ const initializedApp = () => ({type: 'SET-INITIALIZED'} as const)
 //thunk
 export const initializeApp = (): AppThunk => (dispatch) => {
     let promise = dispatch(setUserData())
+
     Promise.all([promise]).then(() => {
         dispatch(initializedApp())
     })

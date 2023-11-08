@@ -3,24 +3,24 @@ import bg from '../../../src/images/bg.jpg';
 import React from 'react';
 import {ProfileType} from 'redux/profile-page-reducer';
 
-type ProfileInfoPropsType = {
+type PropsType = {
     profile?: ProfileType
 }
 
-export const ProfileInfo = (props: ProfileInfoPropsType) => {
+export const ProfileInfo: React.FC<PropsType> = ({profile}) => {
     return (
         <div>
             <div>
 
             </div>
             <div>
-                {props.profile?.photos.small
-                    ? <img src={props.profile?.photos.small} alt=""/>
+                {profile?.photos.small
+                    ? <img src={profile?.photos.small} alt=""/>
                     :<img src={bg} alt="fg" className={classes.bg}/>
                 }
-                <p>{props.profile?.fullName}</p>
-                <p>{props.profile?.aboutMe}</p>
-                <p>{props.profile?.contacts.instagram}</p>
+                <p>{profile?.fullName}</p>
+                <p>{profile?.aboutMe}</p>
+                <p>{profile?.contacts.instagram}</p>
             </div>
         </div>
     )
