@@ -17,7 +17,9 @@ const InitialState: ProfilePageType = {
 export type ProfileActionsTypes =
     ReturnType<typeof addPostAC> |
     ReturnType<typeof getProfile> |
-    ReturnType<typeof getStatus>
+    ReturnType<typeof getStatus> |
+    ReturnType<typeof removePost>
+
 
 export const profilePageReducer = (state: ProfilePageType = InitialState, action: ProfileActionsTypes) => {
     switch (action.type) {
@@ -37,6 +39,10 @@ export const profilePageReducer = (state: ProfilePageType = InitialState, action
             return {
                 ...state,
                 status: action.status
+            }
+        case 'REMOVE-POST':
+            return {...state,
+            postsTexts: state.postsTexts.filter(p => p.id !== action.id)
             }
         default:
             return state
@@ -62,28 +68,34 @@ const getStatus = (status: string) => {
         status
     } as const
 }
+const removePost = (id: string) => {
+    return {
+        type: 'REMOVE-POST',
+        id
+    }as const
+}
 
 //thunk
-export const setProfile = ( userId: string): AppThunk => (dispatch) => {
+export const setProfile = (userId: string): AppThunk => (dispatch) => {
     profileApi.getUserProfile(userId).then(res => {
         dispatch(getProfile(res))
     })
 }
 export const setUserStatus = (userId: string): AppThunk => (dispatch) => {
     profileApi.getUserStatus(userId).then(res => {
-        if(res) {
+        if (res) {
             dispatch(getStatus(res))
         }
-    } )
+    })
 }
-export const updateStatus = (status: string):AppThunk => (dispatch) => {
+export const updateStatus = (status: string): AppThunk => (dispatch) => {
     profileApi.updateUserStatus(status).then(res => {
-        if(res.resultCode === 0) {
+        if (res.resultCode === 0) {
             dispatch(getStatus(status))
         }
     })
 }
-export const clearStatus = ():AppThunk => (dispatch) => {
+export const clearStatus = (): AppThunk => (dispatch) => {
     dispatch(getStatus(''))
 }
 
