@@ -1,31 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './paginator.module.css';
 
 type PropsType = {
-    totalUsersNumber: number
+    totalItemsNumber: number
     pageSize: number
     currentPage: number
     changeCurrentPageCallback: (page: number) => void
+    portionSize: number
 }
 
 export const Paginator: React.FC<PropsType> = ({
-                                                   totalUsersNumber,
+                                                   totalItemsNumber,
                                                    pageSize,
                                                    currentPage,
-                                                   changeCurrentPageCallback
+                                                   changeCurrentPageCallback,
+                                                   portionSize
                                                }) => {
-    const pagesAmount = Math.ceil(totalUsersNumber / pageSize)
-
+    const pagesAmount = Math.ceil(totalItemsNumber / pageSize)
     const pages = []
-
     for (let i = 1; i <= pagesAmount; i++) {
         pages.push(i)
     }
 
+    const portionAmount = Math.ceil(pagesAmount / portionSize)
+    console.log(portionAmount)
+    const [portionNumber, setPortionNumber] = useState(1)
+    console.log(portionNumber)
+    const turnPageBackHandler = () =>{
+        setPortionNumber(portionNumber - 1)
+        changeCurrentPageCallback((portionNumber - 2) * portionSize + 1)
+    }
+    const turnPageUpHandler = () => {
+        setPortionNumber(portionNumber + 1)
+        changeCurrentPageCallback( portionNumber  * portionSize + 1)
+    }
+    const leftSide = (portionNumber - 1) * portionSize + 1
+    const rightSide = portionNumber * portionSize
+
     return (
         <div>
+            {portionNumber > 1
+                && <button onClick={turnPageBackHandler}>back</button>
+            }
             {
-                pages.map((p, index) => {
+                pages
+                    .filter(p => p >= leftSide && p <= rightSide)
+                    .map((p, index) => {
 
                     const finalPageClassName = `
                         ${s.pageNumber}
@@ -38,6 +58,9 @@ export const Paginator: React.FC<PropsType> = ({
                     return <span key={index} className={finalPageClassName}
                                  onClick={changeCurrentPageHandler}>{p}</span>
                 })
+            }
+            {portionNumber < portionAmount
+                && <button onClick={turnPageUpHandler}>next</button>
             }
         </div>
     )

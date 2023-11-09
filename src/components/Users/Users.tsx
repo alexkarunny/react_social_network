@@ -30,7 +30,7 @@ export const Users: React.FC<PropsType> = ({
         <div>
             <h1>{title}</h1>
             <Paginator changeCurrentPageCallback={changeCurrentPageCallback} pageSize={pageSize}
-                       currentPage={currentPage} totalUsersNumber={totalUsersNumber}/>
+                       currentPage={currentPage} totalItemsNumber={totalUsersNumber} portionSize={10}/>
             {
                 users.map(u => <User key={u.id} disabledUsers={disabledUsers} user={u} followUserCallback={followUserCallback} />)
             }
