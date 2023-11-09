@@ -11,8 +11,8 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import Dialogs from 'components/Dialogs/DialogsContainer';
 import Login from 'components/Login/Login';
 import {compose} from 'redux';
-import {connect} from 'react-redux';
-import {RootStateType} from 'redux/redux-store';
+import {connect, Provider} from 'react-redux';
+import {RootStateType, store} from 'redux/redux-store';
 import {Preloader} from 'components/Common/Preloader/Preloader';
 import {initializeApp} from 'redux/app-reducer';
 
@@ -27,27 +27,25 @@ class App extends React.Component<Props> {
     }
 
     render() {
-            if(!this.props.isInitialized) {
-                return <Preloader />
-            }
+        if (!this.props.isInitialized) {
+            return <Preloader/>
+        }
         return (
-            <BrowserRouter>
-                <div className={classes.app}>
-                    <HeaderContainer/>
-                    <NavBar title={'Menu'}/>
-                    <div className={classes.app_content}>
-                        <Route path={'/profile/:userId?'} render={() => <ProfileContainer/>}></Route>
-                        <Route path={'/dialogs'}
-                               render={() => <Dialogs
-                               />}></Route>
-                        <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
-                        <Route path={'/users'} render={() => <UsersContainer title={'Users'}/>}></Route>
-                        <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
-                        <Route path={'/settings'} render={() => <Settings title={'My Settings'}/>}></Route>
-                        <Route path={'/login'} render={() => <Login/>}></Route>
-                    </div>
+            <div className={classes.app}>
+                <HeaderContainer/>
+                <NavBar title={'Menu'}/>
+                <div className={classes.app_content}>
+                    <Route path={'/profile/:userId?'} render={() => <ProfileContainer/>}></Route>
+                    <Route path={'/dialogs'}
+                           render={() => <Dialogs
+                           />}></Route>
+                    <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
+                    <Route path={'/users'} render={() => <UsersContainer title={'Users'}/>}></Route>
+                    <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
+                    <Route path={'/settings'} render={() => <Settings title={'My Settings'}/>}></Route>
+                    <Route path={'/login'} render={() => <Login/>}></Route>
                 </div>
-            </BrowserRouter>
+            </div>
         );
     }
 }
@@ -58,7 +56,19 @@ const mapStateToProps = (state: RootStateType) => {
     }
 }
 
-export default compose<React.ComponentType>(
+const AppContainer = compose<React.ComponentType>(
     connect(mapStateToProps, {initializeApp}),
     withRouter
 )(App);
+
+const SamuraiTsApp: React.FC = () => {
+    return <BrowserRouter>
+        <Provider store={store}>
+            <AppContainer/>
+        </Provider>
+    </BrowserRouter>
+}
+
+export default SamuraiTsApp
+
+
