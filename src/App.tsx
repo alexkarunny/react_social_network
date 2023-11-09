@@ -8,13 +8,15 @@ import {Settings} from 'components/Settings/Settings';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Dialogs from 'components/Dialogs/DialogsContainer';
 import Login from 'components/Login/Login';
 import {compose} from 'redux';
 import {connect, Provider} from 'react-redux';
 import {RootStateType, store} from 'redux/redux-store';
 import {Preloader} from 'components/Common/Preloader/Preloader';
 import {initializeApp} from 'redux/app-reducer';
+import {WithSuspense} from 'hoc/with-suspense';
+
+const Dialogs = React.lazy(() => import ('components/Dialogs/DialogsContainer'));
 
 type MapDispatchPropsType = {
     initializeApp: () => void
@@ -36,9 +38,7 @@ class App extends React.Component<Props> {
                 <NavBar title={'Menu'}/>
                 <div className={classes.app_content}>
                     <Route path={'/profile/:userId?'} render={() => <ProfileContainer/>}></Route>
-                    <Route path={'/dialogs'}
-                           render={() => <Dialogs
-                           />}></Route>
+                    <Route path={'/dialogs'} render={WithSuspense(Dialogs)}></Route>
                     <Route path={'/friends'} render={() => <Friends title={'My Friends'}/>}></Route>
                     <Route path={'/users'} render={() => <UsersContainer title={'Users'}/>}></Route>
                     <Route path={'/video'} render={() => <Video title={'My Video'}/>}></Route>
