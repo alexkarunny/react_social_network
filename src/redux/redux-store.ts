@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, createStore, Store} from 'redux';
+import {applyMiddleware, combineReducers, compose, createStore, Store} from 'redux';
 import {ProfileActionsTypes, profilePageReducer} from './profile-page-reducer';
 import {DialogsActionsTypes, dialogsPageReducer} from './dialogs-page-reducer';
 import {UsersActionsTypes, usersPageReducer} from './users-page-reducer';
@@ -18,7 +18,12 @@ let rootReducer = combineReducers({
 
 export type RootStateType = ReturnType<typeof rootReducer>
 
-export const store: Store<RootStateType> = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+// @ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store: Store<RootStateType> = createStore(rootReducer, /* preloadedState, */ composeEnhancers(applyMiddleware(thunkMiddleware)
+));
+
+/*export const store: Store<RootStateType> = createStore(rootReducer, applyMiddleware(thunkMiddleware))*/
 
 export type AllActionsType = UsersActionsTypes | DialogsActionsTypes | ProfileActionsTypes | AuthActionTypes | AppActionTypes
 
