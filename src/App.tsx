@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './App.module.css';
 import {NavBar} from 'components/Navbar/NavBar';
-import {BrowserRouter, Route, withRouter} from 'react-router-dom';
+import {HashRouter, Route, withRouter} from 'react-router-dom';
 import {Friends} from 'components/Friends/Friends';
 import {Video} from 'components/Video/Video';
 import {Settings} from 'components/Settings/Settings';
@@ -62,11 +62,11 @@ const AppContainer = compose<React.ComponentType>(
 )(App);
 
 const SamuraiTsApp: React.FC = () => {
-    return <BrowserRouter>
+    return <HashRouter>
         <Provider store={store}>
             <AppContainer/>
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
 }
 
 export default SamuraiTsApp
