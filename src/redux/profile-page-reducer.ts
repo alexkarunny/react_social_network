@@ -6,6 +6,7 @@ const ADD_POST = 'profile/ADD-POST'
 const GET_PROFILE = 'profile/GET-PROFILE'
 const SET_STATUS = 'profile/SET-STATUS'
 const REMOVE_POST = 'profile/REMOVE-POST'
+const SET_PHOTO = 'profile/SET-PHOTO'
 
 const InitialState: ProfilePageType = {
     postsTexts: [
@@ -20,7 +21,8 @@ export type ProfileActionsTypes =
     ReturnType<typeof addPostAC> |
     ReturnType<typeof getProfile> |
     ReturnType<typeof getStatus> |
-    ReturnType<typeof removePost>
+    ReturnType<typeof removePost> |
+    ReturnType<typeof setAvatar>
 
 
 export const profilePageReducer = (state: ProfilePageType = InitialState, action: ProfileActionsTypes) => {
@@ -43,9 +45,22 @@ export const profilePageReducer = (state: ProfilePageType = InitialState, action
                 status: action.status
             }
         case REMOVE_POST:
-            return {...state,
-            postsTexts: state.postsTexts.filter(p => p.id !== action.id)
+            return {
+                ...state,
+                postsTexts: state.postsTexts.filter(p => p.id !== action.id)
             }
+        case SET_PHOTO:
+            if (state.profile) {
+                return {
+                    ...state,
+                    profile: {
+                        ...state.profile, photos: {
+                            small: action.photos.small,
+                            large: action.photos.large
+                        }
+                    }
+                }
+            } else return state
         default:
             return state
     }
@@ -74,25 +89,31 @@ const removePost = (id: string) => {
     return {
         type: REMOVE_POST,
         id
-    }as const
+    } as const
+}
+const setAvatar = (photos: PhotosType) => {
+    return {
+        type: SET_PHOTO,
+        photos
+    } as const
 }
 
 //thunk
 export const setProfile = (userId: string): AppThunk => async (dispatch) => {
     const response = await profileApi.getUserProfile(userId)
-        if(response) dispatch(getProfile(response))
+    if (response) dispatch(getProfile(response))
 }
 export const setUserStatus = (userId: string): AppThunk => async (dispatch) => {
-    const response = await  profileApi.getUserStatus(userId)
-        if (response) {
-            dispatch(getStatus(response))
-        }
+    const response = await profileApi.getUserStatus(userId)
+    if (response) {
+        dispatch(getStatus(response))
+    }
 }
 export const updateStatus = (status: string): AppThunk => async (dispatch) => {
     const response = await profileApi.updateUserStatus(status)
-        if (response.resultCode === 0) {
-            dispatch(getStatus(status))
-        }
+    if (response.resultCode === 0) {
+        dispatch(getStatus(status))
+    }
 }
 export const clearStatus = (): AppThunk => (dispatch) => {
     dispatch(getStatus(''))
@@ -100,6 +121,14 @@ export const clearStatus = (): AppThunk => (dispatch) => {
 
 export const addPost = (post: string): AppThunk => (dispatch) => {
     dispatch(addPostAC(post))
+}
+
+export const saveAvatar = (image: File): AppThunk => async (dispatch) => {
+
+    const response = await profileApi.setUserPhoto(image)
+    if (response.resultCode === 0) {
+        dispatch(setAvatar(response.data.photos))
+    }
 }
 
 //types
@@ -125,7 +154,7 @@ type ContactsType = {
     youtube: string
     mainLink: string
 }
-type PhotosType = {
+export type PhotosType = {
     small: string
     large: string
 }

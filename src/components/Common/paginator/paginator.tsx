@@ -23,9 +23,7 @@ export const Paginator: React.FC<PropsType> = ({
     }
 
     const portionAmount = Math.ceil(pagesAmount / portionSize)
-    console.log(portionAmount)
     const [portionNumber, setPortionNumber] = useState(1)
-    console.log(portionNumber)
     const turnPageBackHandler = () =>{
         setPortionNumber(portionNumber - 1)
         changeCurrentPageCallback((portionNumber - 2) * portionSize + 1)

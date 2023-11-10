@@ -15,6 +15,7 @@ export type mapDispatchPropsTypePosts= {
 
 const mapStateToProps = (state: RootStateType): mapStatePropsType => {
     return {
+
         posts: state.profilePage.postsTexts,
     }
 }

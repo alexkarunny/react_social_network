@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {UserType} from 'redux/users-page-reducer';
 import {AuthDataType} from 'redux/auth-reducer';
-import {ProfileType} from 'redux/profile-page-reducer';
+import {PhotosType, ProfileType} from 'redux/profile-page-reducer';
 
 
 type GetResponseType = {
@@ -64,5 +64,12 @@ export const profileApi = {
     },
     updateUserStatus(status: string) {
         return instance.put<FollowResponseType>(`profile/status`, {status}).then(res => res.data)
+    },
+    setUserPhoto(image: File) {
+        const formData = new FormData()
+        formData.append('image', image)
+        return instance.put<AuthResponseType<{photos: PhotosType}>>(`profile/photo`, formData, {headers : {
+            'Content-Type': 'multipart/form-data'
+            }}).then(res => res.data)
     }
 }
